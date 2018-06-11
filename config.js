@@ -11,5 +11,21 @@ module.exports = {
       condition: ...getState().Host.condition
     }`,
     pagination: true
-  }
+  },
+  modals: [{
+    name: 'hostData',
+    type: 'show'
+  }, {
+    name: 'hostDataFetch',
+    type: 'show',
+    fetch: 'get',
+    url: '/tip/hostList/get'
+  },
+  // {
+  //   name: 'hostDataEdit',
+  //   type: 'edit',
+  //   fetch: 'edit',
+  //   url: '/tip/hostList/edit'
+  // }
+  ],
 }

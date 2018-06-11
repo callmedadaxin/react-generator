@@ -12,3 +12,24 @@ export const gethostList = params => (dispatch, getState) => {
     }
   dispatch(gethostListFn(params))
 }
+
+export const showhostDataModal = params => (dispatch, getState) => {
+  dispatch('/changeCurrentItem', item)
+  dispatch('/toggleModal', true)
+}
+export const hidehostDataModal = () => dispatch => {
+  dispatch('/toggleModal', false)
+}
+
+export const showhostDataFetchModal = params => (dispatch, getState) => {
+  dispatch({
+    url: '/tip/hostList/get',
+    action: '/get',
+    params,
+    handleResult: res.data
+  })
+  dispatch('/toggleModal', true)
+}
+export const hidehostDataFetchModal = () => dispatch => {
+  dispatch('/toggleModal', false)
+}
