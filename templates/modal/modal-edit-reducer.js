@@ -4,7 +4,8 @@ const {{name}}Modal = {
     showModal: false,
     item: {},
     data: {},
-    success: false
+    success: false,
+    action: ''
   },
   reducers: {
     reset (state) {
@@ -20,10 +21,14 @@ const {{name}}Modal = {
         success: showModal ? false : state.success
       }
     },
-    changeCurrentItem(state, item) {
+    changeCurrentItem(state, {
+      item,
+      action
+    }) {
       return {
         ...state,
-        item
+        item,
+        action
       }
     },
     {{fetch}}Success(state, data) {

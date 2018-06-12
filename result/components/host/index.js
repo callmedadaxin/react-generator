@@ -48,6 +48,9 @@ hidehostDataEditModal
         <Box data border title="告警主机">
           <HostListTable
   getList={ gethostList }
+  showhostDataEditModal={showhostDataEditModal}
+  deletehostListItem={deletehostListItem}
+  changehostListItem={changehostListItem}
   data={ hostList } />
         </Box>
         <HostDataModal

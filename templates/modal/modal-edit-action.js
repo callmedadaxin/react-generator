@@ -1,17 +1,25 @@
-export const show{{name}}Modal = item => (dispatch, getState) => {
-  dispatch('{{namespace}}/changeCurrentItem', item)
+// 显示编辑Modal
+export const show{{name}}Modal = (item, action) => (dispatch, getState) => {
+  dispatch('{{namespace}}/changeCurrentItem', {
+    item,
+    action
+  })
   dispatch('{{namespace}}/toggleModal', true)
 }
-
+// 隐藏编辑modal
 export const hide{{name}}Modal = () => dispatch => {
   dispatch('{{namespace}}/toggleModal', false)
 }
 
-export const edit{{name}}Modal = (ret, item) => dispatch => {
+// 编辑请求
+export const edit{{name}}Modal = (ret, item, action) => dispatch => {
   {{#if paramsHandler}}
   {{{paramsHandler}}}
   {{/if}}
-  dispatch('{{namespace}}/changeCurrentItem', item)
+  dispatch('{{namespace}}/changeCurrentItem', {
+    item: Object.assign({}, item, ret),
+    action
+  })
   dispatch({
     url: '{{url}}',
     action: '{{namespace}}/{{fetch}}',

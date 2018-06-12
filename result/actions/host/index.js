@@ -1,3 +1,5 @@
+import { post } from '@common/ajax'
+
 const gethostListFn = params => {
   return {
     url: '/tip/hostList/get',
@@ -6,12 +8,34 @@ const gethostListFn = params => {
     handleResult: res => ({ items: res.data.items, page: res.data.page })
   }
 }
+// 获取列表
 export const gethostList = params => (dispatch, getState) => {
   params = {
       condition: ...getState().Host.condition
     }
   dispatch(gethostListFn(params))
 }
+
+// 删除操作
+export const deletehostListItem = params => (dispatch) => {
+  post('/host/delete', params)
+    .then(res => res.json())
+    .then(res => {
+      dispatch(gethostListFn())
+      return res.data
+    })
+}
+
+// 修改状态
+export const changehostListItem = params => (dispatch) => {
+  post('/host/changeStatus', params)
+    .then(res => res.json())
+    .then(res => {
+      dispatch(gethostListFn())
+      return res.data
+    })
+}
+
 
 export const showhostDataModal = params => (dispatch, getState) => {
   dispatch('/host/hostDataModal/changeCurrentItem', item)
@@ -34,17 +58,25 @@ export const hidehostDataFetchModal = () => dispatch => {
   dispatch('/host/hostDataFetchModal/toggleModal', false)
 }
 
-export const showhostDataEditModal = item => (dispatch, getState) => {
-  dispatch('/host/hostDataEditModal/changeCurrentItem', item)
+// 显示编辑Modal
+export const showhostDataEditModal = (item, action) => (dispatch, getState) => {
+  dispatch('/host/hostDataEditModal/changeCurrentItem', {
+    item,
+    action
+  })
   dispatch('/host/hostDataEditModal/toggleModal', true)
 }
-
+// 隐藏编辑modal
 export const hidehostDataEditModal = () => dispatch => {
   dispatch('/host/hostDataEditModal/toggleModal', false)
 }
 
-export const edithostDataEditModal = (ret, item) => dispatch => {
-  dispatch('/host/hostDataEditModal/changeCurrentItem', item)
+// 编辑请求
+export const edithostDataEditModal = (ret, item, action) => dispatch => {
+  dispatch('/host/hostDataEditModal/changeCurrentItem', {
+    item: Object.assign({}, item, ret),
+    action
+  })
   dispatch({
     url: '/tip/hostList/edit',
     action: '/host/hostDataEditModal/edit',

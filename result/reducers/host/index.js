@@ -73,7 +73,8 @@ const hostDataEditModal = {
     showModal: false,
     item: {},
     data: {},
-    success: false
+    success: false,
+    action: ''
   },
   reducers: {
     reset (state) {
@@ -89,10 +90,14 @@ const hostDataEditModal = {
         success: showModal ? false : state.success
       }
     },
-    changeCurrentItem(state, item) {
+    changeCurrentItem(state, {
+      item,
+      action
+    }) {
       return {
         ...state,
-        item
+        item,
+        action
       }
     },
     editSuccess(state, data) {

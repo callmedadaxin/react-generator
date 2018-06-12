@@ -13,10 +13,10 @@ const FormItem = Form.Item
 export default class HostDataEditModal extends PureComponent {
   handleEnsure = () => {
     const { handleEnsure, data } = this.props
-    const { item } = data
+    const { item, action } = data
     const ret = this.input.validateAndSubmit()
     if (ret) {
-      handleEnsure(ret, item)
+      handleEnsure(ret, item, action)
     }
   }
   initFields (data) {

@@ -33,7 +33,11 @@ const getContainerConfig = (config) => {
     component: compile(componentDefinePath, {
       name: config.name,
       getListFn: config.pagination ? `get${config.name}` : false,
-      data: config.name
+      data: config.name,
+      add: config.add,
+      edit: config.edit,
+      del: config.del,
+      status: config.status
     })
   }
 }
@@ -48,7 +52,12 @@ const getActionStr = (config, namespace = '/') => {
     url: config.url,
     action,
     handler: config.resHandler,
-    paramsHandler: config.paramsHandler
+    paramsHandler: config.paramsHandler,
+    add: config.add,
+    edit: config.edit,
+    del: config.del,
+    status: config.status,
+    hasPost: Boolean(config.del || config.status)
   })
 }
 
@@ -56,7 +65,12 @@ const getComponentStr = (config) => {
   return compile(componentPath, {
     name: config.name,
     getList: `get${config.name}`,
-    pagination: config.pagination
+    pagination: config.pagination,
+    add: config.add,
+    edit: config.edit,
+    del: config.del,
+    status: config.status,
+    hasAlert: Boolean(config.add || config.edit)
   })
 }
 
