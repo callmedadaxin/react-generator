@@ -1,7 +1,7 @@
 const gethostListFn = params => {
   return {
     url: '/tip/hostList/get',
-    action: '/hostList/get',
+    action: '/host/hostList/get',
     params,
     handleResult: res => ({ items: res.data.items, page: res.data.page })
   }
@@ -14,43 +14,43 @@ export const gethostList = params => (dispatch, getState) => {
 }
 
 export const showhostDataModal = params => (dispatch, getState) => {
-  dispatch('/changeCurrentItem', item)
-  dispatch('/toggleModal', true)
+  dispatch('/host/hostDataModal/changeCurrentItem', item)
+  dispatch('/host/hostDataModal/toggleModal', true)
 }
 export const hidehostDataModal = () => dispatch => {
-  dispatch('/toggleModal', false)
+  dispatch('/host/hostDataModal/toggleModal', false)
 }
 
 export const showhostDataFetchModal = params => (dispatch, getState) => {
   dispatch({
     url: '/tip/hostList/get',
-    action: '/get',
+    action: '/host/hostDataFetchModal/get',
     params,
-    handleResult: res.data
+    handleResult: res => res.data
   })
-  dispatch('/toggleModal', true)
+  dispatch('/host/hostDataFetchModal/toggleModal', true)
 }
 export const hidehostDataFetchModal = () => dispatch => {
-  dispatch('/toggleModal', false)
+  dispatch('/host/hostDataFetchModal/toggleModal', false)
 }
 
 export const showhostDataEditModal = item => (dispatch, getState) => {
-  dispatch('/changeCurrentItem', item)
-  dispatch('/toggleModal', true)
+  dispatch('/host/hostDataEditModal/changeCurrentItem', item)
+  dispatch('/host/hostDataEditModal/toggleModal', true)
 }
 
 export const hidehostDataEditModal = () => dispatch => {
-  dispatch('/toggleModal', false)
+  dispatch('/host/hostDataEditModal/toggleModal', false)
 }
 
 export const edithostDataEditModal = (ret, item) => dispatch => {
-  dispatch('/changeCurrentItem', item)
+  dispatch('/host/hostDataEditModal/changeCurrentItem', item)
   dispatch({
     url: '/tip/hostList/edit',
-    action: '/edit',
+    action: '/host/hostDataEditModal/edit',
     params,
     handleResult: res => {
-      dispatch(())
+      dispatch(gethostListFn())
       hidehostDataEditModal()(dispatch)
       return res.data
     }

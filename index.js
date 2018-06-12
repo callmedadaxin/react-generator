@@ -83,25 +83,37 @@ const renderActions = (config, childConfig) => {
 
 const renderReducers = (config, childConfig) => {
   const { table, modals } = childConfig
-  const reducers = []
+  const reducers = [`import { combinceReducer } from '@common/easy'`]
   const componentDir = `reducers/${config.name}`
+  let exportsName = []
   // 创建文件夹
   dir.make(componentDir)
 
   reducers.push(table.reducers)
+  exportsName = exportsName.concat(table.container.data)
 
   // modal
   modals.forEach(modal => {
     reducers.push(modal.reducers)
+    exportsName = exportsName.concat(modal.container.data)
   })
+
+  // exports
+  reducers.push(`
+export default combinceReducer({
+  ${exportsName.join(',\n  ')}
+}, '${config.namespace}')
+`)
 
   dir.write(`${componentDir}/index.js`, reducers.join('\n\n'))
 }
 
 const render = (config) => {
   const childConfig = {
-    table: getTable(config.table),
-    modals: config.modals ? config.modals.map(getModal) : []
+    table: getTable(config.table, config.namespace, config),
+    modals: config.modals ? config.modals.map(((modal) => {
+      return getModal(modal, config.namespace, config)
+    })) : []
   }
   renderComponent(config, childConfig)
   renderActions(config, childConfig)

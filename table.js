@@ -65,11 +65,11 @@ const getComponentStr = (config) => {
 // console.log(getComponentStr(config))
 // console.log(getContainerConfig(config))
 
-module.exports = (cfg = config) => {
+module.exports = (cfg = config, namespace) => {
   return {
     name: cfg.name,
     component: getComponentStr(cfg),
-    actions: getActionStr(cfg),
+    actions: getActionStr(cfg, namespace),
     reducers: getReducerStr(cfg),
     container: getContainerConfig(cfg)
   }

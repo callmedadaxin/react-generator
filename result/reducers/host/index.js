@@ -1,3 +1,5 @@
+import { combinceReducer } from '@common/easy'
+
 const hostList = {
   fetch: 'get',
   state: {
@@ -102,3 +104,11 @@ const hostDataEditModal = {
     }
   }
 }
+
+
+export default combinceReducer({
+  hostList,
+  hostDataModalData,
+  hostDataFetchModalData,
+  hostDataEditModalData
+}, '/host')

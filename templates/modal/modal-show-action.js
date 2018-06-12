@@ -7,7 +7,7 @@ export const show{{name}}Modal = params => (dispatch, getState) => {
     url: '{{url}}',
     action: '{{namespace}}/{{fetch}}',
     params,
-    handleResult: {{#if handler}}{{{handler}}}{{else}}res.data{{/if}}
+    handleResult: {{#if handler}}{{{handler}}}{{else}}res => res.data{{/if}}
   })
   {{else}}
   dispatch('{{namespace}}/changeCurrentItem', item)

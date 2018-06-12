@@ -11,8 +11,8 @@ const config = require('./config').modals[2]
 
 const getNamespace = (cur, config) => {
   return cur === '/'
-    ? cur + config.name + '/'
-    : cur + '/' + config.name + '/'
+    ? cur + config.name + 'Modal'
+    : cur + '/' + config.name + 'Modal'
 }
 
 const getReducerStr = (config) => {
@@ -48,17 +48,16 @@ const getContainerConfig = (config) => {
   }
 }
 
-const getActionStr = (config, namespace = '/') => {
+const getActionStr = (config, namespace = '/', totalConfig) => {
   const retNameSpace = getNamespace(namespace, config)
-  const action = retNameSpace + config.fetch
   const tpl = config.type === 'show' ? actionShowPath : actionEditPath
-
   return compile(tpl, {
     name: config.name,
     fetch: config.fetch,
     url: config.url,
-    action,
+    namespace: retNameSpace,
     handler: config.resHandler,
+    getFn: `get${totalConfig.table.name}Fn`,
     paramsHandler: config.paramsHandler
   })
 }
@@ -71,11 +70,11 @@ const getComponentStr = (config) => {
     title: config.title
   })
 }
-module.exports = (cfg = config) => {
+module.exports = (cfg = config, namespace, totalConfig) => {
   return {
     name: cfg.name,
     component: getComponentStr(cfg),
-    actions: getActionStr(cfg),
+    actions: getActionStr(cfg, namespace, totalConfig),
     reducers: getReducerStr(cfg),
     container: getContainerConfig(cfg)
   }
