@@ -14,6 +14,9 @@ $ tdp init modal
 $ tdp init condition
 ```
 
+## 结果
+根据config.js生成的结果可在[这里查看](https://github.com/callmedadaxin/react-generator/tree/master/result)
+
 ## 模块
 各模块会自动生成相关的Component\Define\Actions\Reducers，并最终集成在整个模块中
 
