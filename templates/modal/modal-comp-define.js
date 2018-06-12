@@ -1,6 +1,6 @@
 <{{upper name}}Modal
   {{#if isEdit}}
-  handleEnsure={ {{showModal}} }
+  handleEnsure={ {{editModal}} }
   {{/if}}
   handleCancel={ {{hideModal}} }
   data={ {{data}} } />

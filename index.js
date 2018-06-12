@@ -9,18 +9,42 @@ const reducerPath = './templates/reducer.js'
 
 const config = require('./config')
 
+const getDefines = (config) => {
+  const ret = {
+    imports: [],
+    actions: [],
+    data: []
+  }
+  const { table, modals } = config
+  const concat = item => {
+    ret.imports = ret.imports.concat(item.imports)
+    ret.actions = ret.actions.concat(item.actions)
+    ret.data = ret.data.concat(item.data)
+  }
+  concat(table.container)
+  modals.forEach(modal => concat(modal.container))
+
+  return ret
+}
+
 const renderComponent = (config, childConfig) => {
   const { table, modals } = childConfig
   const componentDir = `components/${config.name}`
   // 创建文件夹
   dir.make(componentDir)
 
+  const defines = getDefines(childConfig)
+
   // index.js
   dir.write(`${componentDir}/index.js`, compile(componentPath, {
-    ...table.container,
+    imports: defines.imports.join('\n'),
+    actionsStr: defines.actions.map(item => `'${item}'`).join(',\n'),
+    actions: defines.actions.join(',\n'),
+    data: defines.data.join(',\n'),
     title: config.title,
     name: config.name,
-    tableComp: table.container.component
+    tableComp: table.container.component,
+    modals
   }))
 
   // index.css

@@ -19,7 +19,7 @@ const hostList = {
 const hostDataModalData = {
   state: {
     showModal: false,
-    item: {},
+    item: {}
   },
   reducers: {
     changeCurrentItem (state, item) {
@@ -41,8 +41,7 @@ const hostDataFetchModalData = {
   fetch: 'get',
   state: {
     showModal: false,
-    item: {},
-    data: {},
+    data: {}
   },
   reducers: {
     changeCurrentItem (state, item) {
@@ -61,6 +60,44 @@ const hostDataFetchModalData = {
       return {
         ...state,
         data
+      }
+    }
+  }
+}
+
+const hostDataEditModal = {
+  fetch: 'edit',
+  state: {
+    showModal: false,
+    item: {},
+    data: {},
+    success: false
+  },
+  reducers: {
+    reset (state) {
+      return {
+        ...state,
+        success: false
+      }
+    },
+    toggleModal(state, showModal) {
+      return {
+        ...state,
+        showModal,
+        success: showModal ? false : state.success
+      }
+    },
+    changeCurrentItem(state, item) {
+      return {
+        ...state,
+        item
+      }
+    },
+    editSuccess(state, data) {
+      return {
+        ...state,
+        data,
+        success: true
       }
     }
   }

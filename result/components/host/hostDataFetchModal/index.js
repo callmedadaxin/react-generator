@@ -19,7 +19,7 @@ export default class HostDataFetchModal extends PureComponent {
     return (
       <Modal
         isOpen={showModal}
-        title=""
+        title="带请求的展示型modal"
         handleEnsure={handleCancel}
         handleCancel={handleCancel}
         footer={this.renderFooter()}

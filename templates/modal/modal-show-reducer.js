@@ -4,9 +4,10 @@ const {{name}}ModalData = {
   {{/if}}
   state: {
     showModal: false,
-    item: {},
     {{#if fetch}}
-    data: {},
+    data: {}
+    {{else}}
+    item: {}
     {{/if}}
   },
   reducers: {

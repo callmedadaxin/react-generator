@@ -33,3 +33,26 @@ export const showhostDataFetchModal = params => (dispatch, getState) => {
 export const hidehostDataFetchModal = () => dispatch => {
   dispatch('/toggleModal', false)
 }
+
+export const showhostDataEditModal = item => (dispatch, getState) => {
+  dispatch('/changeCurrentItem', item)
+  dispatch('/toggleModal', true)
+}
+
+export const hidehostDataEditModal = () => dispatch => {
+  dispatch('/toggleModal', false)
+}
+
+export const edithostDataEditModal = (ret, item) => dispatch => {
+  dispatch('/changeCurrentItem', item)
+  dispatch({
+    url: '/tip/hostList/edit',
+    action: '/edit',
+    params,
+    handleResult: res => {
+      dispatch(())
+      hidehostDataEditModal()(dispatch)
+      return res.data
+    }
+  })
+}
