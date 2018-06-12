@@ -5,7 +5,27 @@ module.exports = {
   namespace: '/host',
   condition: {
     name: 'condition',
-
+    fields: [{
+      key: 'name',
+      type: 'Input',
+      label: '姓名',
+      default: '',
+      validators: [{
+        required: true
+      }],
+      placeholder: '测试'
+    }, {
+      key: 'city',
+      type: 'Select',
+      label: '城市',
+      options: [{
+        label: '111',
+        value: 1
+      }, {
+        label: '222',
+        value: 2
+      }]
+    }]
   },
   table: {
     name: 'hostList',
