@@ -6,10 +6,8 @@ const dir = require('./dir')
 const { toUpperCase } = require('./util')
 
 const componentPath = './templates/component.js'
-const actionPath = './templates/action.js'
-const reducerPath = './templates/reducer.js'
 
-const config = require('./config')
+const config = require('./config.report')
 
 const getDefines = (config) => {
   const ret = {
@@ -81,11 +79,11 @@ const renderActions = (config, childConfig) => {
   // 创建文件夹
   dir.make(componentDir)
 
-  // condition
-  actions.push(condition.actions)
-
   // table
   actions.push(table.actions)
+
+  // condition
+  actions.push(condition.actions)
 
   // modal
   modals.forEach(modal => {
@@ -98,7 +96,7 @@ const renderActions = (config, childConfig) => {
 const renderReducers = (config, childConfig) => {
   const { table, modals, condition } = childConfig
   const reducers = [`import { combinceReducer } from '@common/easy'`]
-  const componentDir = `reducers/${config.name}`
+  const componentDir = `reducers/${toUpperCase(config.name)}`
   let exportsName = []
   // 创建文件夹
   dir.make(componentDir)

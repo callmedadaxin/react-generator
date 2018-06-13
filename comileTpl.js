@@ -18,14 +18,24 @@ Handle.registerHelper('upper', name => {
 const formMap = {
   Input: () => `<Input />`,
   Textarea: () => `<Input type="textarea" />`,
-  Radio: () => {
+  Radio: (field) => {
     return `<RadioGroup>
-      <Radio label="男" value="male" />
-      <Radio label="女" value="female" />
+      ${field.options.map(option => {
+        return `<Radio label="${option.label}" value="${option.value}" />`
+      }).join('\n')}
     </RadioGroup>`
   },
-  Select: field => `<Select options={fields.${field.key}.options} />`,
-  MultiInput: () => `<MultiInput />`
+  Checkbox: (field) => {
+    return `<CheckboxGroup>
+      ${field.options.map(option => {
+        return `<Checkbox label="${option.label}" value="${option.value}" />`
+      }).join('\n')}
+    </CheckboxGroup>`
+  },
+  Select: field => `<Select options={fields.${field.key}.options} ${field.multi ? 'multi' : ''} />`,
+  MultiInput: () => `<MultiInput />`,
+  DateRangePicker: () => `<DateRangePicker />`,
+  LabelSelect: (field) => `<LabelSelect options={fields.${field.key}.options} />`
 }
 
 const getDefault = (item) => {
@@ -54,7 +64,7 @@ Handle.registerHelper('fieldObject', fields => {
   fields.forEach(item => {
     ret.push(
       `${item.key}: {
-        value: field.${item.key} || ${getDefault(item)},${item.validators ? `\n        validators: ${getObjectStr(item.validators)},` : ''}${item.options ? `\noptions: ${getObjectStr(item.options)}` : ''}
+        value: field.${item.key} || ${getDefault(item)}${item.validators ? `,\nvalidators: ${getObjectStr(item.validators)}` : ''}${item.options ? `,\noptions: ${getObjectStr(item.options)}` : ''}
       }`,
     )
   })
@@ -62,7 +72,10 @@ Handle.registerHelper('fieldObject', fields => {
 })
 
 Handle.registerHelper('fieldImport', fields => {
-  return fields.map(item => item.type).join(', ')
+  const ret = fields.map(item => item.type)
+  
+  return ret.filter((item, index) => ret.indexOf(item) === index)
+    .join(', ')
 })
 
 module.exports = (path, data) => {

@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "handlebars": "^4.0.11"
+    "esformatter": "^0.10.0",
+    "esformatter-jsx": "^8.0.1",
+    "handlebars": "^4.0.11",
+    "js-beautify": "^1.7.5"
   }
 }
