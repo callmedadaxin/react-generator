@@ -30,19 +30,25 @@ const longTimeList = ["24小时", "7天", "30天"];
 export default class {{upper name}} extends PureComponent {
   {{#if hasTime}}
   handleTimeChange = time => {
-    const { {{conditionFn}} } = this.props
-    {{conditionFn}}({
+    this.handleConditionChange({
       time_range: time
     })
   }
   {{/if}}
+  handleConditionChange = condition => {
+    const { {{conditionFn}}, {{getDataFn}} } = this.props
+    {{conditionFn}}(condition)
+    {{getDataFn}}(1)
+  }
   render() {
     const {
       features,
       {{{data}}},
       {{{actions}}}
     } = this.props
+    {{#if hasTime}}
     const _timeList = features.max_range_7d ? timeList : longTimeList;
+    {{/if}}
     return (
       <div className="container-fluid">
         {{#if isPage}}

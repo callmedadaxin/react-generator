@@ -14,11 +14,9 @@ export default class HostListTable extends PureComponent {
   startAdd = () => {
     this.props.showhostDataEditModal({}, 'new')
   }
-
   startEdit = (row) => {
     this.props.showhostDataEditModal(row, 'edit')
   }
-
   startDelete = row => {
     const sure = window.confirm(`确认删除?`)
 
@@ -26,34 +24,32 @@ export default class HostListTable extends PureComponent {
       this.props.deletehostListItem(row)
     }
   }
-
   startDelete = row => {
     this.props.changehostListItem(row)
   }
-
-  render () {
-    const { data, getList, editModalData } = this.props
-    const { list, loading, error, page } = data
-    const { item, success, action } = editModalData
+  render() {
+    const {data, getList, editModalData} = this.props
+    const {list, loading, error, page} = data
+    const {item, success, action} = editModalData
 
     return (
-      <Box data={list} isLoading={loading}>
-        <Button type="secondary" className="mgb10 mgt10" onClick={this.startAdd}>+ 创建报告</Button>
-        <Item show={success}>
-          <Alert
-            className="mgb10 mgt10"
-            message={`${action === 'new' ? "创建" : "编辑"}成功！`}
-            description={`已成功${action === 'new' ? "创建" : "编辑"}`}
-          />
+      <Box data={ list } isLoading={ loading }>
+        <Button type="secondary"
+          className="mgb10 mgt10"
+          onClick={ this.startAdd }>
+          + 创建报告
+        </Button>
+        <Item show={ success }>
+          <Alert className="mgb10 mgt10"
+            message={ `${action === 'new' ? "创建" : "编辑"}成功！` }
+            description={ `已成功${action === 'new' ? "创建" : "编辑"}` } />
         </Item>
-        <Table data={list} columns={this.columns} />
+        <Table data={ list } columns={ this.columns } />
         <div className="right-block">
-          <Pagination
-            current={page.cur_page}
-            onChange={page => getList(page)}
-            total={page.total_num}
-            pageSize={page.page_items_num}
-          />
+          <Pagination current={ page.cur_page }
+            onChange={ page => getList(page) }
+            total={ page.total_num }
+            pageSize={ page.page_items_num } />
         </div>
       </Box>
     )

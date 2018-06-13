@@ -25,7 +25,7 @@ const options = {
     "removeSpaceBeforeClosingJSX": false, // default false. if true <React.Something /> => <React.Something/>
     "closingTagOnNewLine": false, // default false. if true attributes on multiple lines will close the tag on a new line
     "JSXAttributeQuotes": "", // possible values "single" or "double". Leave it as empty string if you don't want to modify the attributes' quotes
-  }
+  },
 }
 
 exports.write = (p, content) => {

@@ -16,7 +16,7 @@ const getNamespace = (cur, config) => {
 
 const getReducerStr = (config) => {
   const conditionDefault = config.fields.reduce((obj, item) => {
-    obj[item.key] = item.default || `''`
+    obj[item.key] = `'${item.default || ''}'`
     return obj
   }, {})
   const reducerConfig = {

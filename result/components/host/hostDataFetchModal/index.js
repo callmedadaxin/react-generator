@@ -11,26 +11,27 @@ import styles from "./index.cssmodule.styl";
 @cssmodules(styles)
 export default class HostDataFetchModal extends PureComponent {
   renderFooter() {
-    return <Button type="primary" className="mgr20" width="90" onClick={this.props.handleCancel}>确定</Button>;
+    return <Button type="primary"
+             className="mgr20"
+             width="90"
+             onClick={ this.props.handleCancel }>
+             确定
+           </Button>;
   }
   render() {
-    const { data, handleCancel } = this.props;
-    const { loading, data: itemData = {}, showModal } = data;
+    const {data, handleCancel} = this.props;
+    const {loading, data: itemData = {}, showModal} = data;
     return (
-      <Modal
-        isOpen={showModal}
+      <Modal isOpen={ showModal }
         title="带请求的展示型modal"
-        handleEnsure={handleCancel}
-        handleCancel={handleCancel}
-        footer={this.renderFooter()}
-        contentLabel="hostDataFetchModal"
-      >
-        <Box isLoading={loading} data={itemData}>
-          {
-            JSON.stringify(itemData)
-          }
+        handleEnsure={ handleCancel }
+        handleCancel={ handleCancel }
+        footer={ this.renderFooter() }
+        contentLabel="hostDataFetchModal">
+        <Box isLoading={ loading } data={ itemData }>
+          { JSON.stringify(itemData) }
         </Box>
       </Modal>
-    );
+      );
   }
 }

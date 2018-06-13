@@ -1,3 +1,3 @@
 <{{upper name}}
-  handleConditionChange={ change{{upper name}} }
+  handleConditionChange={this.handleConditionChange}
   data={ {{name}} } />

@@ -22,71 +22,45 @@ const longTimeList = ["24小时", "7天", "30天"];
   (state, mapState) => state.Host,
   (dispatch, mapActions) => mapActions(actions, [
     'changeCondition',
-'getHostList',
-'showHostDataModal',
-'hideHostDataModal',
-'showHostDataFetchModal',
-'hideHostDataFetchModal',
-'editHostDataEditModal',
-'showHostDataEditModal',
-'hideHostDataEditModal'
+    'getHostList',
+    'showHostDataModal',
+    'hideHostDataModal',
+    'showHostDataFetchModal',
+    'hideHostDataFetchModal',
+    'editHostDataEditModal',
+    'showHostDataEditModal',
+    'hideHostDataEditModal'
   ])
 )
 @cssmodule(styles)
 export default class Host extends PureComponent {
   handleTimeChange = time => {
-    const { changeCondition } = this.props
+    const {changeCondition} = this.props
     changeCondition({
       time_range: time
     })
   }
   render() {
-    const {
-      features,
-      condition,
-hostList,
-hostDataModalData,
-hostDataFetchModalData,
-hostDataEditModalData,
-      changeCondition,
-getHostList,
-showHostDataModal,
-hideHostDataModal,
-showHostDataFetchModal,
-hideHostDataFetchModal,
-editHostDataEditModal,
-showHostDataEditModal,
-hideHostDataEditModal
-    } = this.props
+    const {features, condition, hostList, hostDataModalData, hostDataFetchModalData, hostDataEditModalData, changeCondition, getHostList, showHostDataModal, hideHostDataModal, showHostDataFetchModal, hideHostDataFetchModal, editHostDataEditModal, showHostDataEditModal, hideHostDataEditModal} = this.props
     const _timeList = features.max_range_7d ? timeList : longTimeList;
     return (
       <div className="container-fluid">
         <PageTitle name="告警主机">
-          <TimeSwitch
-            timeRange={condition.time_range}
-            options={_timeList}
-            changeTimeRange={this.handleTimeChange}
-          />
+          <TimeSwitch timeRange={ condition.time_range }
+            options={ _timeList }
+            changeTimeRange={ this.handleTimeChange } />
         </PageTitle>
-        <Condition
-  handleConditionChange={ changeCondition }
-  data={ condition } />
-        <HostListTable
-  getList={ getHostList }
-  showHostDataEditModal={showHostDataEditModal}
-  deleteHostListItem={deleteHostListItem}
-  changeHostListItem={changeHostListItem}
-  data={ hostList } />
-        <HostDataModal
-  handleCancel={ hideHostDataModal }
-  data={ hostDataModalData } />
-        <HostDataFetchModal
-  handleCancel={ hideHostDataFetchModal }
-  data={ hostDataFetchModalData } />
-        <HostDataEditModal
-  handleEnsure={ editHostDataEditModal }
-  handleCancel={ hideHostDataEditModal }
-  data={ hostDataEditModalData } />
+        <Condition handleConditionChange={ changeCondition } data={ condition } />
+        <HostListTable getList={ getHostList }
+          showHostDataEditModal={ showHostDataEditModal }
+          deleteHostListItem={ deleteHostListItem }
+          changeHostListItem={ changeHostListItem }
+          data={ hostList } />
+        <HostDataModal handleCancel={ hideHostDataModal } data={ hostDataModalData } />
+        <HostDataFetchModal handleCancel={ hideHostDataFetchModal } data={ hostDataFetchModalData } />
+        <HostDataEditModal handleEnsure={ editHostDataEditModal }
+          handleCancel={ hideHostDataEditModal }
+          data={ hostDataEditModalData } />
       </div>
     )
   }

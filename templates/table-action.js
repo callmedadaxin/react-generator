@@ -11,11 +11,11 @@ const get{{upper name}}Fn = params => {
   }
 }
 // 获取列表
-export const get{{upper name}} = params => (dispatch, getState) => {
+export const get{{upper name}} = (page = 1) => (dispatch, getState) => {
   {{#if paramsHandler}}
   {{{paramsHandler}}}
   {{/if}}
-  dispatch(get{{name}}Fn(params))
+  dispatch(get{{upper name}}Fn(params))
 }
 
 {{#if del}}
@@ -27,7 +27,7 @@ export const delete{{upper name}}Item = params => (dispatch) => {
   post('{{del.url}}', params)
     .then(res => res.json())
     .then(res => {
-      dispatch(get{{name}}Fn())
+      dispatch(get{{upper name}}Fn())
       return res.data
     })
 }

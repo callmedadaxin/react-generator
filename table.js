@@ -26,8 +26,10 @@ const getContainerConfig = (config) => {
       `import ${toUpperCase(config.name)}Table from './${config.name}Table'`
     ],
     actions: [
-      `get${toUpperCase(config.name)}`
-    ],
+      `get${toUpperCase(config.name)}`,
+      config.del ? `delete${toUpperCase(config.name)}Item` : '',
+      config.status ? `change${toUpperCase(config.name)}Item` : ''
+    ].filter(item => item),
     data: [
       config.name
     ],

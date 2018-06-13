@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cssmodule from 'react-css-modules'
 
-import { Box, Table{{#if pagination}}, Pagination{{/if}}{{#if hasAlert}}, Alert{{/if}} } from '@common/lib'
+import { Box, Table{{#if pagination}}, Pagination{{/if}}{{#if hasAlert}}, Alert{{/if}}{{#if add}}, Button{{/if}} } from '@common/lib'
 {{#if hasAlert}}
 import Item from '@common/Item'
 {{/if}}
@@ -15,12 +15,12 @@ export default class {{upper name}}Table extends PureComponent {
 
   {{#if add}}
   startAdd = () => {
-    this.props.show{{add.modal}}Modal({}, 'new')
+    this.props.show{{upper add.modal}}Modal({}, 'new')
   }
   {{/if}}
   {{#if edit}}
   startEdit = (row) => {
-    this.props.show{{edit.modal}}Modal(row, 'edit')
+    this.props.show{{upper edit.modal}}Modal(row, 'edit')
   }
   {{/if}}
   {{#if del}}
@@ -28,13 +28,20 @@ export default class {{upper name}}Table extends PureComponent {
     const sure = window.confirm(`确认删除?`)
 
     if (sure) {
-      this.props.delete{{name}}Item(row)
+      this.props.delete{{upper name}}Item(row)
     }
   }
   {{/if}}
   {{#if status}}
   startDelete = row => {
-    this.props.change{{name}}Item(row)
+    this.props.change{{upper name}}Item(row)
+  }
+  {{/if}}
+  {{#if add}}
+  renderHeader () {
+    return (
+      <Button type="secondary" className="mgb10 mgt10" onClick={this.startAdd}>+ {{add.btn}}</Button>
+    )
   }
   {{/if}}
   render () {
@@ -45,10 +52,7 @@ export default class {{upper name}}Table extends PureComponent {
     {{/if}}
 
     return (
-      <Box data={list} isLoading={loading}>
-        {{#if add}}
-        <Button type="secondary" className="mgb10 mgt10" onClick={this.startAdd}>+ {{add.btn}}</Button>
-        {{/if}}
+      <Box data border {{#if add}}title={this.renderHeader()}{{/if}}>
         {{#if hasAlert}}
         <Item show={success}>
           <Alert
@@ -58,17 +62,19 @@ export default class {{upper name}}Table extends PureComponent {
           />
         </Item>
         {{/if}}
-        <Table data={list} columns={this.columns} />
-        {{#if pagination}}
-        <div className="right-block">
-          <Pagination
-            current={page.cur_page}
-            onChange={page => getList(page)}
-            total={page.total_num}
-            pageSize={page.page_items_num}
-          />
-        </div>
-        {{/if}}
+        <Box data={list} isLoading={loading}>
+          <Table data={list} columns={this.columns} />
+          {{#if pagination}}
+          <div className="right-block">
+            <Pagination
+              current={page.cur_page}
+              onChange={page => getList(page)}
+              total={page.total_num}
+              pageSize={page.page_items_num}
+            />
+          </div>
+          {{/if}}
+        </Box>
       </Box>
     )
   }

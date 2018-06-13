@@ -4,8 +4,27 @@ const path = require('path')
 
 const resolve = p => path.resolve(__dirname, p)
 
+const formatObjStr = obj => {
+  if (Array.isArray(obj)) {
+    return obj.map(formatObjStr)
+  }
+
+  return Object.keys(obj).reduce((o, key) => {
+    const item = obj[key]
+    if (typeof(item) === 'object') {
+      obj[key] = formatObjStr(item)
+      return obj
+    }
+    if (typeof(item) === 'string') {
+      obj[key] = `'${item}'`
+      return obj
+    }
+    obj[key] = item
+    return obj
+  }, {})
+} 
 const getObjectStr = obj => {
-  const ret = JSON.stringify(obj) || ''
+  const ret = JSON.stringify(formatObjStr(obj)) || ''
   return ret.replace(/"/g, '')
 }
 
@@ -64,7 +83,7 @@ Handle.registerHelper('fieldObject', fields => {
   fields.forEach(item => {
     ret.push(
       `${item.key}: {
-        value: field.${item.key} || ${getDefault(item)}${item.validators ? `,\nvalidators: ${getObjectStr(item.validators)}` : ''}${item.options ? `,\noptions: ${getObjectStr(item.options)}` : ''}
+        value: data.${item.key} || ${getDefault(item)}${item.validators ? `,\nvalidators: ${getObjectStr(item.validators)}` : ''}${item.options ? `,\noptions: ${getObjectStr(item.options)}` : ''}
       }`,
     )
   })

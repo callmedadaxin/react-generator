@@ -1,4 +1,4 @@
-const {{name}}Modal = {
+const {{name}}ModalData = {
   fetch: '{{fetch}}',
   state: {
     showModal: false,

@@ -8,6 +8,7 @@ const { toUpperCase } = require('./util')
 const componentPath = './templates/component.js'
 
 const config = require('./config.report')
+// const config = require('./config.report')
 
 const getDefines = (config) => {
   const ret = {
@@ -48,7 +49,8 @@ const renderComponent = (config, childConfig) => {
     tableComp: table.container.component,
     modals,
     conditionComp: condition.container.component,
-    conditionFn: `change${toUpperCase(condition.name)}`
+    conditionFn: `change${toUpperCase(condition.name)}`,
+    getDataFn: `get${toUpperCase(table.name)}`
   }))
 
   // index.css
@@ -90,7 +92,7 @@ const renderActions = (config, childConfig) => {
     actions.push(modal.actions)
   })
 
-  dir.write(`${componentDir}/index.js`, actions.join('\n\n'))
+  dir.write(`${componentDir}/index.js`, actions.join(''))
 }
 
 const renderReducers = (config, childConfig) => {
@@ -121,7 +123,7 @@ export default combinceReducer({
 }, '${config.namespace}')
 `)
 
-  dir.write(`${componentDir}/index.js`, reducers.join('\n\n'))
+  dir.write(`${componentDir}/index.js`, reducers.join('\n'))
 }
 
 const render = (config) => {

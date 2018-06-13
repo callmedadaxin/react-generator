@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import cssmodules from "react-css-modules"
 
-import { Modal, Loading, Box, Form, {{{fieldImport fields}}} } from '@common/lib'
+import { Modal, Loading, Box, Form, Alert, {{{fieldImport fields}}} } from '@common/lib'
 import Item from '@common/Item'
 
 import styles from "./index.cssmodule.styl"
@@ -44,7 +44,7 @@ export default class {{upper name}}Modal extends PureComponent {
           </div>
         </Item>
         <div className="content-wrap">
-          <Form data={fields} ref={input => (this.input = input)}>
+          <Form data={fields} ref={form => (this.form = form)}>
             {{{field fields}}}
           </Form>
         </div>

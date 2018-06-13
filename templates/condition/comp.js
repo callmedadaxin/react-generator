@@ -29,7 +29,7 @@ export default class {{ upper name }} extends PureComponent {
     const fields = this.initFields(data)
     return (
       <Box data border>
-        <Form data={fields} ref={input => (this.input = input)}>
+        <Form data={fields} ref={form => (this.form = form)}>
           {{{field fields}}}
         </Form>
         <div className="right-block">

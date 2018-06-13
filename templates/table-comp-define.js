@@ -4,6 +4,7 @@
   {{/if}}
   {{#if edit}}
   show{{upper edit.modal}}Modal={show{{upper edit.modal}}Modal}
+  editModalData={ {{edit.modal}}ModalData }
   {{/if}}
   {{#if del}}
   delete{{upper name}}Item={delete{{upper name}}Item}

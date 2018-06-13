@@ -6,6 +6,7 @@ export const show{{upper name}}Modal = (item, action) => (dispatch, getState) =>
   })
   dispatch('{{namespace}}/toggleModal', true)
 }
+
 // 隐藏编辑modal
 export const hide{{upper name}}Modal = () => dispatch => {
   dispatch('{{namespace}}/toggleModal', false)

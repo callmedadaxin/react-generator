@@ -12,8 +12,8 @@ const config = require('./config').modals[2]
 
 const getNamespace = (cur, config) => {
   return cur === '/'
-    ? cur + config.name + 'Modal'
-    : cur + '/' + config.name + 'Modal'
+    ? cur + config.name + 'ModalData'
+    : cur + '/' + config.name + 'ModalData'
 }
 
 const getReducerStr = (config) => {
