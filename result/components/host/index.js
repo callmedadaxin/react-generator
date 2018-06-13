@@ -11,10 +11,10 @@ import * as actions from '@actions/host'
 import styles from './index.cssmodule.styl'
 
 import Condition from './condition'
-import hostListTable from './hostListTable'
-import hostDataModal from './hostDataModal'
-import hostDataFetchModal from './hostDataFetchModal'
-import hostDataEditModal from './hostDataEditModal'
+import HostListTable from './hostListTable'
+import HostDataModal from './hostDataModal'
+import HostDataFetchModal from './hostDataFetchModal'
+import HostDataEditModal from './hostDataEditModal'
 
 const timeList = ["24小时", "7天"];
 const longTimeList = ["24小时", "7天", "30天"];
@@ -22,14 +22,14 @@ const longTimeList = ["24小时", "7天", "30天"];
   (state, mapState) => state.Host,
   (dispatch, mapActions) => mapActions(actions, [
     'changeCondition',
-'gethostList',
-'showhostDataModal',
-'hidehostDataModal',
-'showhostDataFetchModal',
-'hidehostDataFetchModal',
-'edithostDataEditModal',
-'showhostDataEditModal',
-'hidehostDataEditModal'
+'getHostList',
+'showHostDataModal',
+'hideHostDataModal',
+'showHostDataFetchModal',
+'hideHostDataFetchModal',
+'editHostDataEditModal',
+'showHostDataEditModal',
+'hideHostDataEditModal'
   ])
 )
 @cssmodule(styles)
@@ -49,14 +49,14 @@ hostDataModalData,
 hostDataFetchModalData,
 hostDataEditModalData,
       changeCondition,
-gethostList,
-showhostDataModal,
-hidehostDataModal,
-showhostDataFetchModal,
-hidehostDataFetchModal,
-edithostDataEditModal,
-showhostDataEditModal,
-hidehostDataEditModal
+getHostList,
+showHostDataModal,
+hideHostDataModal,
+showHostDataFetchModal,
+hideHostDataFetchModal,
+editHostDataEditModal,
+showHostDataEditModal,
+hideHostDataEditModal
     } = this.props
     const _timeList = features.max_range_7d ? timeList : longTimeList;
     return (
@@ -72,20 +72,20 @@ hidehostDataEditModal
   handleConditionChange={ changeCondition }
   data={ condition } />
         <HostListTable
-  getList={ gethostList }
-  showhostDataEditModal={showhostDataEditModal}
-  deletehostListItem={deletehostListItem}
-  changehostListItem={changehostListItem}
+  getList={ getHostList }
+  showHostDataEditModal={showHostDataEditModal}
+  deleteHostListItem={deleteHostListItem}
+  changeHostListItem={changeHostListItem}
   data={ hostList } />
         <HostDataModal
-  handleCancel={ hidehostDataModal }
+  handleCancel={ hideHostDataModal }
   data={ hostDataModalData } />
         <HostDataFetchModal
-  handleCancel={ hidehostDataFetchModal }
+  handleCancel={ hideHostDataFetchModal }
   data={ hostDataFetchModalData } />
         <HostDataEditModal
-  handleEnsure={ edithostDataEditModal }
-  handleCancel={ hidehostDataEditModal }
+  handleEnsure={ editHostDataEditModal }
+  handleCancel={ hideHostDataEditModal }
   data={ hostDataEditModalData } />
       </div>
     )

@@ -1,4 +1,5 @@
-export const show{{name}}Modal = params => (dispatch, getState) => {
+// 显示modal
+export const show{{upper name}}Modal = params => (dispatch, getState) => {
   {{#if fetch}}
   {{#if paramsHandler}}
   {{{paramsHandler}}}
@@ -14,6 +15,8 @@ export const show{{name}}Modal = params => (dispatch, getState) => {
   {{/if}}
   dispatch('{{namespace}}/toggleModal', true)
 }
-export const hide{{name}}Modal = () => dispatch => {
+
+// 关闭modal
+export const hide{{upper name}}Modal = () => dispatch => {
   dispatch('{{namespace}}/toggleModal', false)
 }

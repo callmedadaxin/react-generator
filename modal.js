@@ -7,6 +7,7 @@ const actionEditPath = './templates/modal/modal-edit-action.js'
 const componentShowPath = './templates/modal/modal-show-comp.js'
 const componentEditPath = './templates/modal/modal-edit-comp.js'
 const componentDefinePath = './templates/modal/modal-comp-define.js'
+const { toUpperCase } = require('./util')
 const config = require('./config').modals[2]
 
 const getNamespace = (cur, config) => {
@@ -28,12 +29,12 @@ const getContainerConfig = (config) => {
   const isEdit = config.type === 'edit'
   return {
     imports: [
-      `import ${config.name}Modal from './${config.name}Modal'`
+      `import ${toUpperCase(config.name)}Modal from './${config.name}Modal'`
     ],
     actions: [
-      isEdit ? `edit${config.name}Modal` : '',
-      `show${config.name}Modal`,
-      `hide${config.name}Modal`,
+      isEdit ? `edit${toUpperCase(config.name)}Modal` : '',
+      `show${toUpperCase(config.name)}Modal`,
+      `hide${toUpperCase(config.name)}Modal`,
     ].filter(item => item),
     data: [
       `${config.name}ModalData`
@@ -41,8 +42,8 @@ const getContainerConfig = (config) => {
     component: compile(componentDefinePath, {
       isEdit: config.type === 'edit',
       name: config.name,
-      hideModal: `hide${config.name}Modal`,
-      editModal: `edit${config.name}Modal`,
+      hideModal: `hide${toUpperCase(config.name)}Modal`,
+      editModal: `edit${toUpperCase(config.name)}Modal`,
       data: `${config.name}ModalData`
     })
   }
@@ -57,7 +58,7 @@ const getActionStr = (config, namespace = '/', totalConfig) => {
     url: config.url,
     namespace: retNameSpace,
     handler: config.resHandler,
-    getFn: `get${totalConfig.table.name}Fn`,
+    getFn: `get${toUpperCase(totalConfig.table.name)}Fn`,
     paramsHandler: config.paramsHandler
   })
 }

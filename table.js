@@ -4,6 +4,7 @@ const reducerPath = './templates/table-reducer.js'
 const actionPath = './templates/table-action.js'
 const componentPath = './templates/table-comp.js'
 const componentDefinePath = './templates/table-comp-define.js'
+const { toUpperCase } = require('./util')
 
 const getNamespace = (cur, config) => {
   return cur === '/'
@@ -22,17 +23,17 @@ const getReducerStr = (config) => {
 const getContainerConfig = (config) => {
   return {
     imports: [
-      `import ${config.name}Table from './${config.name}Table'`
+      `import ${toUpperCase(config.name)}Table from './${config.name}Table'`
     ],
     actions: [
-      `get${config.name}`
+      `get${toUpperCase(config.name)}`
     ],
     data: [
       config.name
     ],
     component: compile(componentDefinePath, {
       name: config.name,
-      getListFn: config.pagination ? `get${config.name}` : false,
+      getListFn: config.pagination ? `get${toUpperCase(config.name)}` : false,
       data: config.name,
       add: config.add,
       edit: config.edit,

@@ -2,7 +2,7 @@
 import { post } from '@common/ajax'
 {{/if}}
 
-const get{{name}}Fn = params => {
+const get{{upper name}}Fn = params => {
   return {
     url: '{{url}}',
     action: '{{action}}',
@@ -11,7 +11,7 @@ const get{{name}}Fn = params => {
   }
 }
 // 获取列表
-export const get{{name}} = params => (dispatch, getState) => {
+export const get{{upper name}} = params => (dispatch, getState) => {
   {{#if paramsHandler}}
   {{{paramsHandler}}}
   {{/if}}
@@ -20,7 +20,7 @@ export const get{{name}} = params => (dispatch, getState) => {
 
 {{#if del}}
 // 删除操作
-export const delete{{name}}Item = params => (dispatch) => {
+export const delete{{upper name}}Item = params => (dispatch) => {
   {{#if del.paramsHandler}}
   {{{del.paramsHandler}}}
   {{/if}}
@@ -35,7 +35,7 @@ export const delete{{name}}Item = params => (dispatch) => {
 
 {{#if status}}
 // 修改状态
-export const change{{name}}Item = params => (dispatch) => {
+export const change{{upper name}}Item = params => (dispatch) => {
   {{#if status.paramsHandler}}
   {{{status.paramsHandler}}}
   {{/if}}

@@ -5,7 +5,7 @@ export const changeCondition = condition => (dispatch, getState) => {
 
 import { post } from '@common/ajax'
 
-const gethostListFn = params => {
+const getHostListFn = params => {
   return {
     url: '/tip/hostList/get',
     action: '/host/hostList/get',
@@ -14,7 +14,7 @@ const gethostListFn = params => {
   }
 }
 // 获取列表
-export const gethostList = params => (dispatch, getState) => {
+export const getHostList = params => (dispatch, getState) => {
   params = {
       condition: ...getState().Host.condition
     }
@@ -22,7 +22,7 @@ export const gethostList = params => (dispatch, getState) => {
 }
 
 // 删除操作
-export const deletehostListItem = params => (dispatch) => {
+export const deleteHostListItem = params => (dispatch) => {
   post('/host/delete', params)
     .then(res => res.json())
     .then(res => {
@@ -32,7 +32,7 @@ export const deletehostListItem = params => (dispatch) => {
 }
 
 // 修改状态
-export const changehostListItem = params => (dispatch) => {
+export const changeHostListItem = params => (dispatch) => {
   post('/host/changeStatus', params)
     .then(res => res.json())
     .then(res => {
@@ -87,7 +87,7 @@ export const edithostDataEditModal = (ret, item, action) => dispatch => {
     action: '/host/hostDataEditModal/edit',
     params,
     handleResult: res => {
-      dispatch(gethostListFn())
+      dispatch(getHostListFn())
       hidehostDataEditModal()(dispatch)
       return res.data
     }
