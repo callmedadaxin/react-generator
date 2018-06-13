@@ -1,6 +1,8 @@
 module.exports = {
   name: 'host', // 模块名称
-  title: '告警主机', // 模块标题
+  isPage: true, // 是否是page页
+  hasTime: true, // 是否有时间选择
+  title: '告警主机', // 模块标题, 非page页时不传
   root: './result', // 输出的src目录
   namespace: '/host',
   condition: {

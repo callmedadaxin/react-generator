@@ -61,6 +61,10 @@ Handle.registerHelper('fieldObject', fields => {
   return ret.join(',\n')
 })
 
+Handle.registerHelper('fieldImport', fields => {
+  return fields.map(item => item.type).join(', ')
+})
+
 module.exports = (path, data) => {
   const tpl = fs.readFileSync(resolve(path), 'utf8')
   return Handle.compile(tpl)(data)

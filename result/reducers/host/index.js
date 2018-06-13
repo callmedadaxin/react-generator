@@ -1,5 +1,22 @@
 import { combinceReducer } from '@common/easy'
 
+const condition = {
+  state: {
+    data: {name:'',city:''}
+  },
+  reducers: {
+    changeCondition (state, data) {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...data
+        }
+      }
+    }
+  }
+}
+
 const hostList = {
   fetch: 'get',
   state: {
@@ -112,6 +129,7 @@ const hostDataEditModal = {
 
 
 export default combinceReducer({
+  condition,
   hostList,
   hostDataModalData,
   hostDataFetchModalData,

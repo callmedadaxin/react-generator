@@ -1,7 +1,9 @@
 const compile = require('./comileTpl')
 const getTable = require('./table')
 const getModal = require('./modal')
+const getCondition = require('./condition')
 const dir = require('./dir')
+const { toUpperCase } = require('./util')
 
 const componentPath = './templates/component.js'
 const actionPath = './templates/action.js'
@@ -15,12 +17,13 @@ const getDefines = (config) => {
     actions: [],
     data: []
   }
-  const { table, modals } = config
+  const { table, modals, condition } = config
   const concat = item => {
     ret.imports = ret.imports.concat(item.imports)
     ret.actions = ret.actions.concat(item.actions)
     ret.data = ret.data.concat(item.data)
   }
+  concat(condition.container)
   concat(table.container)
   modals.forEach(modal => concat(modal.container))
 
@@ -28,7 +31,7 @@ const getDefines = (config) => {
 }
 
 const renderComponent = (config, childConfig) => {
-  const { table, modals } = childConfig
+  const { table, modals, condition } = childConfig
   const componentDir = `components/${config.name}`
   // 创建文件夹
   dir.make(componentDir)
@@ -37,6 +40,7 @@ const renderComponent = (config, childConfig) => {
 
   // index.js
   dir.write(`${componentDir}/index.js`, compile(componentPath, {
+    ...config,
     imports: defines.imports.join('\n'),
     actionsStr: defines.actions.map(item => `'${item}'`).join(',\n'),
     actions: defines.actions.join(',\n'),
@@ -44,11 +48,18 @@ const renderComponent = (config, childConfig) => {
     title: config.title,
     name: config.name,
     tableComp: table.container.component,
-    modals
+    modals,
+    conditionComp: condition.container.component,
+    conditionFn: `change${toUpperCase(condition.name)}`
   }))
 
   // index.css
   dir.write(`${componentDir}/index.cssmodule.styl`, '')
+
+  // condition
+  dir.make(`${componentDir}/${condition.name}`)
+  dir.write(`${componentDir}/${condition.name}/index.js`, condition.component)
+  dir.write(`${componentDir}/${condition.name}/index.cssmodule.styl`, '')
 
   // table
   dir.make(`${componentDir}/${table.name}Table`)
@@ -64,11 +75,14 @@ const renderComponent = (config, childConfig) => {
 }
 
 const renderActions = (config, childConfig) => {
-  const { table, modals } = childConfig
+  const { table, modals, condition } = childConfig
   const actions = []
   const componentDir = `actions/${config.name}`
   // 创建文件夹
   dir.make(componentDir)
+
+  // condition
+  actions.push(condition.actions)
 
   // table
   actions.push(table.actions)
@@ -82,12 +96,16 @@ const renderActions = (config, childConfig) => {
 }
 
 const renderReducers = (config, childConfig) => {
-  const { table, modals } = childConfig
+  const { table, modals, condition } = childConfig
   const reducers = [`import { combinceReducer } from '@common/easy'`]
   const componentDir = `reducers/${config.name}`
   let exportsName = []
   // 创建文件夹
   dir.make(componentDir)
+
+  // condition
+  reducers.push(condition.reducers)
+  exportsName = exportsName.concat(condition.container.data)
 
   reducers.push(table.reducers)
   exportsName = exportsName.concat(table.container.data)
@@ -113,7 +131,8 @@ const render = (config) => {
     table: getTable(config.table, config.namespace, config),
     modals: config.modals ? config.modals.map(((modal) => {
       return getModal(modal, config.namespace, config)
-    })) : []
+    })) : [],
+    condition: getCondition(config.condition, config.namespace, config)
   }
   renderComponent(config, childConfig)
   renderActions(config, childConfig)

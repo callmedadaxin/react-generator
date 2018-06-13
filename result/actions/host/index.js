@@ -1,3 +1,8 @@
+// 更改condition内容
+export const changeCondition = condition => (dispatch, getState) => {
+  dispatch('/host/condition/changeCondition', condition)
+}
+
 import { post } from '@common/ajax'
 
 const gethostListFn = params => {

@@ -1,4 +1,5 @@
 exports.toUpperCase = (name) => {
-  name[0] = name[0].toUpperCase()
-  return name
+  return name.split('').map((item, index) => {
+    return index === 0 ? item.toUpperCase() : item
+  }).join('')
 }
