@@ -2,58 +2,35 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cssmodule from 'react-css-modules'
 
-import { Box, Table{{#if pagination}}, Pagination{{/if}}{{#if hasAlert}}, Alert{{/if}}{{#if add}}, Button{{/if}} } from '@common/lib'
-{{#if hasAlert}}
+import { Box, Table, Pagination, Alert } from '@common/lib'
 import Item from '@common/Item'
-{{/if}}
 
 import styles from './index.cssmodule.styl'
 
 @cssmodule(styles)
-export default class {{upper name}}Table extends PureComponent {
+export default class TaskListTable extends PureComponent {
   columns = []
 
-  {{#if add}}
-  startAdd = () => {
-    this.props.show{{upper add.modal}}Modal({}, 'new')
-  }
-  {{/if}}
-  {{#if edit}}
   startEdit = (row) => {
-    this.props.show{{upper edit.modal}}Modal(row, 'edit')
+    this.props.showReportEditModal(row, 'edit')
   }
-  {{/if}}
-  {{#if del}}
   startDelete = row => {
     const sure = window.confirm(`确认删除?`)
 
     if (sure) {
-      this.props.delete{{upper name}}Item(row)
+      this.props.deleteTaskListItem(row)
     }
   }
-  {{/if}}
-  {{#if status}}
   startChangeStatus = row => {
-    this.props.change{{upper name}}Item(row)
+    this.props.changeTaskListItem(row)
   }
-  {{/if}}
-  {{#if add}}
-  renderHeader () {
-    return (
-      <Button type="secondary" className="mgb10 mgt10" onClick={this.startAdd}>+ {{add.btn}}</Button>
-    )
-  }
-  {{/if}}
   render () {
-    const { data{{#if pagination}}, getList{{/if}}{{#if hasAlert}}, editModalData{{/if}} } = this.props
-    const { list, loading, error{{#if pagination}}, page{{/if}} } = data
-    {{#if hasAlert}}
+    const { data, getList, editModalData } = this.props
+    const { list, loading, error, page } = data
     const { item, success, action } = editModalData
-    {{/if}}
 
     return (
-      <Box data border {{#if add}}title={this.renderHeader()}{{/if}}>
-        {{#if hasAlert}}
+      <Box data border >
         <Item show={success}>
           <Alert
             className="mgb10 mgt10"
@@ -61,10 +38,8 @@ export default class {{upper name}}Table extends PureComponent {
             description={`已成功${action === 'new' ? "创建" : "编辑"}`}
           />
         </Item>
-        {{/if}}
         <Box data={list} isLoading={loading}>
           <Table data={list} columns={this.columns} />
-          {{#if pagination}}
           <div className="right-block">
             <Pagination
               current={page.cur_page}
@@ -73,7 +48,6 @@ export default class {{upper name}}Table extends PureComponent {
               pageSize={page.page_items_num}
             />
           </div>
-          {{/if}}
         </Box>
       </Box>
     )

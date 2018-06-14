@@ -21,7 +21,7 @@ const timeList = ["24小时", "7天"];
 const longTimeList = ["24小时", "7天", "30天"];
 {{/if}}
 @connect(
-  (state, mapState) => state.{{upper name}},
+  (state, mapState) => state.{{state}},
   (dispatch, mapActions) => mapActions(actions, [
     {{{actionsStr}}}
   ])
@@ -35,11 +35,13 @@ export default class {{upper name}} extends PureComponent {
     })
   }
   {{/if}}
+  {{#if conditionComp}}
   handleConditionChange = condition => {
     const { {{conditionFn}}, {{getDataFn}} } = this.props
     {{conditionFn}}(condition)
     {{getDataFn}}(1)
   }
+  {{/if}}
   render() {
     const {
       features,
@@ -62,8 +64,12 @@ export default class {{upper name}} extends PureComponent {
           {{/if}}
         </PageTitle>
         {{/if}}
+        {{#if conditionComp}}
         {{{conditionComp}}}
+        {{/if}}
+        {{#if tableComp}}
         {{{tableComp}}}
+        {{/if}}
         {{#each modals}}
         {{{this.container.component}}}
         {{/each}}

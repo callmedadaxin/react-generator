@@ -5,13 +5,6 @@ const esformatter = require('esformatter');
 //register plugin manually
 esformatter.register(require('esformatter-jsx'));
 
-const resolve = p => path.resolve(__dirname, path.join(config.root, p))
-
-exports.make = (p) => {
-  if (fs.existsSync(resolve(p))) return
-  fs.mkdirSync(resolve(p))
-}
-
 const options = {
   "jsx": {
     "formatJSX": true, //Duh! that's the default
@@ -28,6 +21,21 @@ const options = {
   },
 }
 
-exports.write = (p, content) => {
-  fs.writeFileSync(resolve(p), esformatter.format(content, options), 'utf8')
+module.exports = (config) => {
+  const resolve = p => path.resolve(__dirname, path.join(config.root, p))
+
+  return {
+    make: (p) => {
+      if (fs.existsSync(resolve(p))) return
+      fs.mkdirSync(resolve(p))
+    },
+    write: (p, content) => {
+      fs.writeFileSync(
+        resolve(p),
+        // esformatter.format(content, options),
+        content,
+        'utf8'
+      )
+    }
+  }
 }

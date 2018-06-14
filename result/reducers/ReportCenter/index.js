@@ -1,8 +1,7 @@
 import { combinceReducer } from '@common/easy'
-
 const condition = {
   state: {
-    data: {creat_time:seven_days,name:'',report_type:''}
+    data: {creat_time:'seven_days',name:'',report_type:''}
   },
   reducers: {
     changeCondition (state, data) {
@@ -16,7 +15,6 @@ const condition = {
     }
   }
 }
-
 const reportList = {
   fetch: 'get',
   state: {
@@ -34,8 +32,7 @@ const reportList = {
   }
 }
  
-
-const reportEditModal = {
+const reportEditModalData = {
   fetch: 'edit',
   state: {
     showModal: false,
@@ -77,7 +74,6 @@ const reportEditModal = {
     }
   }
 }
-
 
 export default combinceReducer({
   condition,

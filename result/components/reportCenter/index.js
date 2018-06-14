@@ -18,6 +18,7 @@ import ReportEditModal from './reportEditModal'
   (dispatch, mapActions) => mapActions(actions, [
     'changeCondition',
 'getReportList',
+'deleteReportListItem',
 'editReportEditModal',
 'showReportEditModal',
 'hideReportEditModal'
@@ -25,6 +26,11 @@ import ReportEditModal from './reportEditModal'
 )
 @cssmodule(styles)
 export default class ReportCenter extends PureComponent {
+  handleConditionChange = condition => {
+    const { changeCondition, getReportList } = this.props
+    changeCondition(condition)
+    getReportList(1)
+  }
   render() {
     const {
       features,
@@ -33,21 +39,22 @@ reportList,
 reportEditModalData,
       changeCondition,
 getReportList,
+deleteReportListItem,
 editReportEditModal,
 showReportEditModal,
 hideReportEditModal
     } = this.props
-    const _timeList = features.max_range_7d ? timeList : longTimeList;
     return (
       <div className="container-fluid">
         <PageTitle name="报告中心">
         </PageTitle>
         <Condition
-  handleConditionChange={ changeCondition }
+  handleConditionChange={this.handleConditionChange}
   data={ condition } />
         <ReportListTable
   getList={ getReportList }
   showReportEditModal={showReportEditModal}
+  editModalData={ reportEditModalData }
   deleteReportListItem={deleteReportListItem}
   data={ reportList } />
         <ReportEditModal

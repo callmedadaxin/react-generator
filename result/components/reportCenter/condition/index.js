@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cssmodule from 'react-css-modules'
 
 import EnterEnsure from "@common/EnterEnsure"
-import { Box, Form, Button,Input, Input, Select } from '@common/lib'
+import { Box, Form, Button,Input, Select } from '@common/lib'
 
 import styles from './index.cssmodule.styl'
 
@@ -22,14 +22,14 @@ export default class Condition extends PureComponent {
   initFields (data) {
     return {
       creat_time: {
-        value: field.creat_time || '',
+        value: data.creat_time || ''
       },
 name: {
-        value: field.name || '',
+        value: data.name || ''
       },
 report_type: {
-        value: field.report_type || '',
-options: [{label:明细,value:detail},{label:按主机聚合,value:machine_agg},{label:按威胁事件聚合,value:incident_agg},{label:威胁分析报告,value:analysis}]
+        value: data.report_type || '',
+options: [{label:'明细',value:'detail'},{label:'按主机聚合',value:'machine_agg'},{label:'按威胁事件聚合',value:'incident_agg'},{label:'威胁分析报告',value:'analysis'}]
       }
     }
   }
@@ -38,7 +38,7 @@ options: [{label:明细,value:detail},{label:按主机聚合,value:machine_agg},
     const fields = this.initFields(data)
     return (
       <Box data border>
-        <Form data={fields} ref={input => (this.input = input)}>
+        <Form data={fields} ref={form => (this.form = form)}>
           <div className="row">
       <FormItem label="时间筛选" field="creat_time">
         <Input />

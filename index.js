@@ -2,29 +2,27 @@ const compile = require('./comileTpl')
 const getTable = require('./table')
 const getModal = require('./modal')
 const getCondition = require('./condition')
-const dir = require('./dir')
+const config = require('./config.report')
+const dir = require('./dir')(config)
 const { toUpperCase } = require('./util')
 
 const componentPath = './templates/component.js'
 const containerPath = './templates/container.js'
 
-const config = require('./config.report')
-// const config = require('./config.report')
-
-const getDefines = (config) => {
+const getDefines = (config, childConfig) => {
   const ret = {
     imports: [],
     actions: [],
     data: []
   }
-  const { table, modals, condition } = config
+  const { table, modals, condition } = childConfig
   const concat = item => {
     ret.imports = ret.imports.concat(item.imports)
     ret.actions = ret.actions.concat(item.actions)
     ret.data = ret.data.concat(item.data)
   }
-  concat(condition.container)
-  concat(table.container)
+  config.condition && concat(condition.container)
+  config.table && concat(table.container)
   modals.forEach(modal => concat(modal.container))
 
   return ret
@@ -32,11 +30,14 @@ const getDefines = (config) => {
 
 const renderComponent = (config, childConfig) => {
   const { table, modals, condition } = childConfig
-  const componentDir = `components/${config.name}`
+  const componentDir = !config.isChild
+    ? `components/${config.name}`
+    : `components/${config.path}`
+
   // 创建文件夹
   dir.make(componentDir)
 
-  const defines = getDefines(childConfig)
+  const defines = getDefines(config, childConfig)
 
   // index.js
   dir.write(`${componentDir}/index.js`, compile(componentPath, {
@@ -47,11 +48,12 @@ const renderComponent = (config, childConfig) => {
     data: defines.data.join(',\n'),
     title: config.title,
     name: config.name,
-    tableComp: table.container.component,
+    tableComp: config.table ? table.container.component : '',
     modals,
-    conditionComp: condition.container.component,
-    conditionFn: `change${toUpperCase(condition.name)}`,
-    getDataFn: `get${toUpperCase(table.name)}`
+    conditionComp: config.condition ? condition.container.component : '',
+    conditionFn: config.condition ? `change${toUpperCase(condition.name)}` : '',
+    getDataFn: config.table ? `get${toUpperCase(table.name)}` : '',
+    state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.'))
   }))
   if (config.hasContainer) {
     dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {
@@ -61,41 +63,53 @@ const renderComponent = (config, childConfig) => {
   // index.css
   dir.write(`${componentDir}/index.cssmodule.styl`, '')
 
-  // condition
-  dir.make(`${componentDir}/${condition.name}`)
-  dir.write(`${componentDir}/${condition.name}/index.js`, condition.component)
-  dir.write(`${componentDir}/${condition.name}/index.cssmodule.styl`, '')
+  if (config.condition) {
+    // condition
+    dir.make(`${componentDir}/${condition.name}`)
+    dir.write(`${componentDir}/${condition.name}/index.js`, condition.component)
+    dir.write(`${componentDir}/${condition.name}/index.cssmodule.styl`, '')
+  }
 
   // table
-  dir.make(`${componentDir}/${table.name}Table`)
-  dir.write(`${componentDir}/${table.name}Table/index.js`, table.component)
-  dir.write(`${componentDir}/${table.name}Table/index.cssmodule.styl`, '')
+  if (config.table) {
+    dir.make(`${componentDir}/${table.name}Table`)
+    dir.write(`${componentDir}/${table.name}Table/index.js`, table.component)
+    dir.write(`${componentDir}/${table.name}Table/index.cssmodule.styl`, '')
+  }
 
   // modal
-  modals.forEach(modal => {
-    dir.make(`${componentDir}/${modal.name}Modal`)
-    dir.write(`${componentDir}/${modal.name}Modal/index.js`, modal.component)
-    dir.write(`${componentDir}/${modal.name}Modal/index.cssmodule.styl`, '')
-  })
+  if (config.modals) {
+    modals.forEach(modal => {
+      dir.make(`${componentDir}/${modal.name}Modal`)
+      dir.write(`${componentDir}/${modal.name}Modal/index.js`, modal.component)
+      dir.write(`${componentDir}/${modal.name}Modal/index.cssmodule.styl`, '')
+    })
+  }
 }
 
 const renderActions = (config, childConfig) => {
   const { table, modals, condition } = childConfig
   const actions = []
-  const componentDir = `actions/${config.name}`
+  const componentDir = `actions/${config.path || config.name}`
   // 创建文件夹
   dir.make(componentDir)
 
   // table
-  actions.push(table.actions)
+  if (config.table) {
+    actions.push(table.actions)
+  }
 
   // condition
-  actions.push(condition.actions)
+  if (config.condition) {
+    actions.push(condition.actions)
+  }
 
   // modal
-  modals.forEach(modal => {
-    actions.push(modal.actions)
-  })
+  if (config.modals) {
+    modals.forEach(modal => {
+      actions.push(modal.actions)
+    })
+  }
 
   dir.write(`${componentDir}/index.js`, actions.join(''))
 }
@@ -103,29 +117,34 @@ const renderActions = (config, childConfig) => {
 const renderReducers = (config, childConfig) => {
   const { table, modals, condition } = childConfig
   const reducers = [`import { combinceReducer } from '@common/easy'`]
-  const componentDir = `reducers/${toUpperCase(config.name)}`
+  const componentDir = `reducers/${toUpperCase(config.path || config.name)}`
   let exportsName = []
   // 创建文件夹
   dir.make(componentDir)
 
   // condition
-  reducers.push(condition.reducers)
-  exportsName = exportsName.concat(condition.container.data)
-
-  reducers.push(table.reducers)
-  exportsName = exportsName.concat(table.container.data)
+  if (config.condition) {
+    reducers.push(condition.reducers)
+    exportsName = exportsName.concat(condition.container.data)
+  }
+  // table
+  if (config.table) {
+    reducers.push(table.reducers)
+    exportsName = exportsName.concat(table.container.data)
+  }
 
   // modal
-  modals.forEach(modal => {
-    reducers.push(modal.reducers)
-    exportsName = exportsName.concat(modal.container.data)
-  })
-
+  if (config.modals) {
+    modals.forEach(modal => {
+      reducers.push(modal.reducers)
+      exportsName = exportsName.concat(modal.container.data)
+    })
+  }
   // exports
   reducers.push(`
 export default combinceReducer({
   ${exportsName.join(',\n  ')}
-}, '${config.namespace}')
+}${!config.isChild ? `, '${config.namespace}'`: ''})
 `)
 
   dir.write(`${componentDir}/index.js`, reducers.join('\n'))

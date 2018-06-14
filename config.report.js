@@ -4,7 +4,8 @@ module.exports = {
   hasContainer: true, // 是否自动生成container
   hasTime: false, // 是否有时间选择
   title: '报告中心', // 模块标题, 非page页时不传
-  root: '../tip/src/', // 输出的src目录
+  root: './result', // 输出的src目录
+  // root: '../tip/src/', // 输出的src目录
   namespace: '/report',
   condition: {
     name: 'condition',
