@@ -1,6 +1,7 @@
 module.exports = {
   name: 'reportCenter', // 模块名称
   isPage: true, // 是否是page页
+  hasContainer: true, // 是否自动生成container
   hasTime: false, // 是否有时间选择
   title: '报告中心', // 模块标题, 非page页时不传
   root: '../tip/src/', // 输出的src目录

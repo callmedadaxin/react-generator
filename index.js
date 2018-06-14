@@ -6,6 +6,7 @@ const dir = require('./dir')
 const { toUpperCase } = require('./util')
 
 const componentPath = './templates/component.js'
+const containerPath = './templates/container.js'
 
 const config = require('./config.report')
 // const config = require('./config.report')
@@ -52,7 +53,11 @@ const renderComponent = (config, childConfig) => {
     conditionFn: `change${toUpperCase(condition.name)}`,
     getDataFn: `get${toUpperCase(table.name)}`
   }))
-
+  if (config.hasContainer) {
+    dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {
+      ...config
+    }))
+  }
   // index.css
   dir.write(`${componentDir}/index.cssmodule.styl`, '')
 
