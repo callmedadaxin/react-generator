@@ -6,7 +6,7 @@ const taskList = {
     page: {}
   },
   reducers: {
-    getSuccess (state, {items, page}) {
+    getSuccess(state, {items, page}) {
       return {
         ...state,
         list: items,
@@ -15,7 +15,7 @@ const taskList = {
     }
   }
 }
- 
+
 
 export default combinceReducer({
   taskList

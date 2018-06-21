@@ -40,7 +40,7 @@ export default class {{upper name}}Table extends PureComponent {
   {{#if add}}
   renderHeader () {
     return (
-      <Button type="secondary" className="mgb10 mgt10" onClick={this.startAdd}>+ {{add.btn}}</Button>
+      <Button type="secondary" onClick={this.startAdd}>+ {{add.btn}}</Button>
     )
   }
   {{/if}}
@@ -52,7 +52,7 @@ export default class {{upper name}}Table extends PureComponent {
     {{/if}}
 
     return (
-      <Box data border {{#if add}}title={this.renderHeader()}{{/if}}>
+      <Box data={list} isLoading={loading} border {{#if add}}title={this.renderHeader()}{{/if}}>
         {{#if hasAlert}}
         <Item show={success}>
           <Alert
@@ -62,19 +62,17 @@ export default class {{upper name}}Table extends PureComponent {
           />
         </Item>
         {{/if}}
-        <Box data={list} isLoading={loading}>
-          <Table data={list} columns={this.columns} />
-          {{#if pagination}}
-          <div className="right-block">
-            <Pagination
-              current={page.cur_page}
-              onChange={page => getList(page)}
-              total={page.total_num}
-              pageSize={page.page_items_num}
-            />
-          </div>
-          {{/if}}
-        </Box>
+        <Table data={list} columns={this.columns} />
+        {{#if pagination}}
+        <div className="mgt20 right-block">
+          <Pagination
+            current={page.cur_page}
+            onChange={page => getList(page)}
+            total={page.total_num}
+            pageSize={page.page_items_num}
+          />
+        </div>
+        {{/if}}
       </Box>
     )
   }

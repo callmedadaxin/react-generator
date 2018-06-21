@@ -32,8 +32,8 @@ module.exports = (config) => {
     write: (p, content) => {
       fs.writeFileSync(
         resolve(p),
-        // esformatter.format(content, options),
-        content,
+        esformatter.format(content, options),
+        // content,
         'utf8'
       )
     }

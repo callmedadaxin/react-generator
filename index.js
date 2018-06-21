@@ -2,7 +2,7 @@ const compile = require('./comileTpl')
 const getTable = require('./table')
 const getModal = require('./modal')
 const getCondition = require('./condition')
-const config = require('./config.report')
+const config = require('./config')
 const dir = require('./dir')(config)
 const { toUpperCase } = require('./util')
 
@@ -53,7 +53,8 @@ const renderComponent = (config, childConfig) => {
     conditionComp: config.condition ? condition.container.component : '',
     conditionFn: config.condition ? `change${toUpperCase(condition.name)}` : '',
     getDataFn: config.table ? `get${toUpperCase(table.name)}` : '',
-    state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.'))
+    state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.')),
+    action: config.path || config.name
   }))
   if (config.hasContainer) {
     dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {

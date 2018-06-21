@@ -35,7 +35,7 @@ module.exports = {
     url: '/tip/hostList/get',
     resHandler: 'res => ({ items: res.data.items, page: res.data.page })',
     paramsHandler: `params = {
-      condition: ...getState().Host.condition
+      condition: getState().Host.condition
     }`,
     pagination: true, // 是否带分页
     // 包含新增操作

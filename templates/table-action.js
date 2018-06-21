@@ -20,14 +20,14 @@ export const get{{upper name}} = (page = 1) => (dispatch, getState) => {
 
 {{#if del}}
 // 删除操作
-export const delete{{upper name}}Item = params => (dispatch) => {
+export const delete{{upper name}}Item = params => (dispatch, getState) => {
   {{#if del.paramsHandler}}
   {{{del.paramsHandler}}}
   {{/if}}
   post('{{del.url}}', params)
     .then(res => res.json())
     .then(res => {
-      dispatch(get{{upper name}}Fn())
+      get{{upper name}}(1)(dispatch, getState)
       return res.data
     })
 }
@@ -42,7 +42,7 @@ export const change{{upper name}}Item = params => (dispatch) => {
   post('{{status.url}}', params)
     .then(res => res.json())
     .then(res => {
-      dispatch(get{{name}}Fn())
+      get{{upper name}}(1)(dispatch, getState)
       return res.data
     })
 }

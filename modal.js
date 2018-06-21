@@ -58,7 +58,7 @@ const getActionStr = (config, namespace = '/', totalConfig) => {
     url: config.url,
     namespace: retNameSpace,
     handler: config.resHandler,
-    getFn: `get${toUpperCase(totalConfig.table.name)}Fn`,
+    getFn: `get${toUpperCase(totalConfig.table.name)}`,
     paramsHandler: config.paramsHandler
   })
 }

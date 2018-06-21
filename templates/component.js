@@ -11,7 +11,7 @@ import PageTitle from "@common/PageTitle"
 import TimeSwitch from "@common/TimeSwtich"
 {{/if}}
 
-import * as actions from '@actions/{{name}}'
+import * as actions from '@actions/{{action}}'
 import styles from './index.cssmodule.styl'
 
 {{{imports}}}

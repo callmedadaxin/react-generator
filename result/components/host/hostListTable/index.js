@@ -8,21 +8,24 @@ import Item from '@common/Item'
 import styles from './index.cssmodule.styl'
 
 @cssmodule(styles)
-export default class ReportListTable extends PureComponent {
+export default class HostListTable extends PureComponent {
   columns = []
 
   startAdd = () => {
-    this.props.showReportEditModal({}, 'new')
+    this.props.showHostDataEditModal({}, 'new')
   }
   startEdit = (row) => {
-    this.props.showReportEditModal(row, 'edit')
+    this.props.showHostDataEditModal(row, 'edit')
   }
   startDelete = row => {
     const sure = window.confirm(`确认删除?`)
 
     if (sure) {
-      this.props.deleteReportListItem(row)
+      this.props.deleteHostListItem(row)
     }
+  }
+  startChangeStatus = row => {
+    this.props.changeHostListItem(row)
   }
   renderHeader() {
     return (

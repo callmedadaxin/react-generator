@@ -17,50 +17,35 @@ import ReportEditModal from './reportEditModal'
   (state, mapState) => state.ReportCenter,
   (dispatch, mapActions) => mapActions(actions, [
     'changeCondition',
-'getReportList',
-'deleteReportListItem',
-'editReportEditModal',
-'showReportEditModal',
-'hideReportEditModal'
+    'getReportList',
+    'deleteReportListItem',
+    'editReportEditModal',
+    'showReportEditModal',
+    'hideReportEditModal'
   ])
 )
 @cssmodule(styles)
 export default class ReportCenter extends PureComponent {
   handleConditionChange = condition => {
-    const { changeCondition, getReportList } = this.props
+    const {changeCondition, getReportList} = this.props
     changeCondition(condition)
     getReportList(1)
   }
   render() {
-    const {
-      features,
-      condition,
-reportList,
-reportEditModalData,
-      changeCondition,
-getReportList,
-deleteReportListItem,
-editReportEditModal,
-showReportEditModal,
-hideReportEditModal
-    } = this.props
+    const {features, condition, reportList, reportEditModalData, changeCondition, getReportList, deleteReportListItem, editReportEditModal, showReportEditModal, hideReportEditModal} = this.props
     return (
       <div className="container-fluid">
         <PageTitle name="报告中心">
         </PageTitle>
-        <Condition
-  handleConditionChange={this.handleConditionChange}
-  data={ condition } />
-        <ReportListTable
-  getList={ getReportList }
-  showReportEditModal={showReportEditModal}
-  editModalData={ reportEditModalData }
-  deleteReportListItem={deleteReportListItem}
-  data={ reportList } />
-        <ReportEditModal
-  handleEnsure={ editReportEditModal }
-  handleCancel={ hideReportEditModal }
-  data={ reportEditModalData } />
+        <Condition handleConditionChange={ this.handleConditionChange } data={ condition } />
+        <ReportListTable getList={ getReportList }
+          showReportEditModal={ showReportEditModal }
+          editModalData={ reportEditModalData }
+          deleteReportListItem={ deleteReportListItem }
+          data={ reportList } />
+        <ReportEditModal handleEnsure={ editReportEditModal }
+          handleCancel={ hideReportEditModal }
+          data={ reportEditModalData } />
       </div>
     )
   }

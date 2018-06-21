@@ -17,9 +17,9 @@ export default class ReportCenter extends PureComponent {
     document.title = "报告中心 - TDP"
   }
   render() {
-    const { features } = this.props
+    const {features} = this.props
     return (
-      <ReportCenterComp features={features}/>
+      <ReportCenterComp features={ features } />
     )
   }
 }

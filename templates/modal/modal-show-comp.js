@@ -11,7 +11,7 @@ import styles from "./index.cssmodule.styl";
 @cssmodules(styles)
 export default class {{upper name}}Modal extends PureComponent {
   renderFooter() {
-    return <Button type="primary" className="mgr20" width="90" onClick={this.props.handleCancel}>确定</Button>;
+    return <Button type="primary" width="90" onClick={this.props.handleCancel}>确定</Button>;
   }
   render() {
     const { data, handleCancel } = this.props;

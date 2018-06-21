@@ -13,7 +13,7 @@ export const hide{{upper name}}Modal = () => dispatch => {
 }
 
 // 编辑请求
-export const edit{{upper name}}Modal = (ret, item, action) => dispatch => {
+export const edit{{upper name}}Modal = (ret, item, action) => (dispatch, getState) => {
   {{#if paramsHandler}}
   {{{paramsHandler}}}
   {{/if}}
@@ -26,7 +26,7 @@ export const edit{{upper name}}Modal = (ret, item, action) => dispatch => {
     action: '{{namespace}}/{{fetch}}',
     params,
     handleResult: res => {
-      dispatch({{getFn}}())
+      {{getFn}}(1)(dispatch, getState)
       hide{{upper name}}Modal()(dispatch)
       return res.data
     }

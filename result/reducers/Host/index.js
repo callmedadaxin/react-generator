@@ -2,9 +2,8 @@ import { combinceReducer } from '@common/easy'
 const condition = {
   state: {
     data: {
-      creat_time: 'seven_days',
       name: '',
-      report_type: ''
+      city: ''
     }
   },
   reducers: {
@@ -19,7 +18,7 @@ const condition = {
     }
   }
 }
-const reportList = {
+const hostList = {
   fetch: 'get',
   state: {
     list: [],
@@ -36,7 +35,54 @@ const reportList = {
   }
 }
 
-const reportEditModalData = {
+const hostDataModalData = {
+  state: {
+    showModal: false,
+    item: {}
+  },
+  reducers: {
+    changeCurrentItem(state, item) {
+      return {
+        ...state,
+        item
+      }
+    },
+    toggleModal(state, showModal) {
+      return {
+        ...state,
+        showModal
+      }
+    },
+  }
+}
+const hostDataFetchModalData = {
+  fetch: 'get',
+  state: {
+    showModal: false,
+    data: {}
+  },
+  reducers: {
+    changeCurrentItem(state, item) {
+      return {
+        ...state,
+        item
+      }
+    },
+    toggleModal(state, showModal) {
+      return {
+        ...state,
+        showModal
+      }
+    },
+    getSuccess(state, data) {
+      return {
+        ...state,
+        data
+      }
+    }
+  }
+}
+const hostDataEditModalData = {
   fetch: 'edit',
   state: {
     showModal: false,
@@ -78,6 +124,8 @@ const reportEditModalData = {
 
 export default combinceReducer({
   condition,
-  reportList,
-  reportEditModalData
-}, '/report')
+  hostList,
+  hostDataModalData,
+  hostDataFetchModalData,
+  hostDataEditModalData
+}, '/host')

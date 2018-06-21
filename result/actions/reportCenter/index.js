@@ -5,23 +5,26 @@ const getReportListFn = params => {
     url: '/tip/web/v1/report/list',
     action: '/report/reportList/get',
     params,
-    handleResult: res => ({ items: res.data.items, page: res.data.page })
+    handleResult: res => ({
+      items: res.data.items,
+      page: res.data.page
+    })
   }
 }
 // 获取列表
 export const getReportList = (page = 1) => (dispatch, getState) => {
   const params = {
-      condition: getState().ReportCenter.condition
-    }
+    condition: getState().ReportCenter.condition
+  }
   dispatch(getReportListFn(params))
 }
 
 // 删除操作
-export const deleteReportListItem = params => (dispatch) => {
+export const deleteReportListItem = params => (dispatch, getState) => {
   post('/tip/web/v1/report/delete/', params)
     .then(res => res.json())
     .then(res => {
-      dispatch(getReportListFn())
+      getReportList(1)(dispatch, getState)
       return res.data
     })
 }
@@ -45,7 +48,7 @@ export const hideReportEditModal = () => dispatch => {
 }
 
 // 编辑请求
-export const editReportEditModal = (ret, item, action) => dispatch => {
+export const editReportEditModal = (ret, item, action) => (dispatch, getState) => {
   dispatch('/report/reportEditModalData/changeCurrentItem', {
     item: Object.assign({}, item, ret),
     action
@@ -55,7 +58,7 @@ export const editReportEditModal = (ret, item, action) => dispatch => {
     action: '/report/reportEditModalData/edit',
     params,
     handleResult: res => {
-      dispatch(getReportListFn())
+      getReportList(1)(dispatch, getState)
       hideReportEditModal()(dispatch)
       return res.data
     }

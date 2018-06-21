@@ -21,26 +21,20 @@ export default class Condition extends PureComponent {
   }
   initFields(data) {
     return {
-      creat_time: {
-        value: data.creat_time || ''
-      },
       name: {
-        value: data.name || ''
+        value: data.name || '',
+        validators: [{
+          required: true
+        }]
       },
-      report_type: {
-        value: data.report_type || '',
+      city: {
+        value: data.city || '',
         options: [{
-          label: '明细',
-          value: 'detail'
+          label: '111',
+          value: 1
         }, {
-          label: '按主机聚合',
-          value: 'machine_agg'
-        }, {
-          label: '按威胁事件聚合',
-          value: 'incident_agg'
-        }, {
-          label: '威胁分析报告',
-          value: 'analysis'
+          label: '222',
+          value: 2
         }]
       }
     }
@@ -52,22 +46,15 @@ export default class Condition extends PureComponent {
       <Box data border>
         <Form data={ fields } ref={ form => (this.form = form) }>
           <div className="row">
-            <FormItem label="时间筛选" field="creat_time">
-              <Input />
-            </FormItem>
-          </div>
-          <div className="row">
-            <FormItem label="报告名称"
+            <FormItem label="姓名"
               field="name"
-              placeholder="按名称搜索">
+              placeholder="测试">
               <Input />
             </FormItem>
           </div>
           <div className="row">
-            <FormItem label="报告类型"
-              field="report_type"
-              placeholder="选择报告类型">
-              <Select options={ fields.report_type.options } />
+            <FormItem label="城市" field="city">
+              <Select options={ fields.city.options } />
             </FormItem>
           </div>
         </Form>
