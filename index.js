@@ -28,41 +28,43 @@ const getDefines = (config, childConfig) => {
   return ret
 }
 
-const renderComponent = (config, childConfig) => {
+const renderComponent = (config, childConfig, isAdd) => {
   const { table, modals, condition } = childConfig
   const componentDir = !config.isChild
     ? `components/${config.name}`
     : `components/${config.path}`
-  // 创建文件夹
-  dir.make(componentDir)
-
   const defines = getDefines(config, childConfig)
+  
+  if (!isAdd) {
+    // 创建文件夹
+    dir.make(componentDir)
 
-  // index.js
-  dir.write(`${componentDir}/index.js`, compile(componentPath, {
-    ...config,
-    imports: defines.imports.join('\n'),
-    actionsStr: defines.actions.map(item => `'${item}'`).join(',\n'),
-    actions: defines.actions.join(',\n'),
-    data: defines.data.join(',\n'),
-    title: config.title,
-    name: config.name,
-    tableComp: config.table ? table.container.component : '',
-    modals,
-    conditionComp: config.condition ? condition.container.component : '',
-    conditionFn: config.condition ? `change${toUpperCase(condition.name)}` : '',
-    getDataFn: config.table ? `get${toUpperCase(table.name)}` : '',
-    state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.')),
-    action: config.path || config.name
-  }))
-
-  if (config.hasContainer) {
-    dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {
-      ...config
+    // index.js
+    dir.write(`${componentDir}/index.js`, compile(componentPath, {
+      ...config,
+      imports: defines.imports.join('\n'),
+      actionsStr: defines.actions.map(item => `'${item}'`).join(',\n'),
+      actions: defines.actions.join(',\n'),
+      data: defines.data.join(',\n'),
+      title: config.title,
+      name: config.name,
+      tableComp: config.table ? table.container.component : '',
+      modals,
+      conditionComp: config.condition ? condition.container.component : '',
+      conditionFn: config.condition ? `change${toUpperCase(condition.name)}` : '',
+      getDataFn: config.table ? `get${toUpperCase(table.name)}` : '',
+      state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.')),
+      action: config.path || config.name
     }))
+
+    if (config.hasContainer) {
+      dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {
+        ...config
+      }))
+    }
+    // index.css
+    dir.write(`${componentDir}/index.cssmodule.styl`, '')
   }
-  // index.css
-  dir.write(`${componentDir}/index.cssmodule.styl`, '')
 
   if (config.condition) {
     // condition
@@ -86,14 +88,22 @@ const renderComponent = (config, childConfig) => {
       dir.write(`${componentDir}/${modal.name}Modal/index.cssmodule.styl`, '')
     })
   }
+  return defines
 }
 
-const renderActions = (config, childConfig) => {
+const renderActions = (config, childConfig, isAdd) => {
   const { table, modals, condition } = childConfig
   const actions = []
   const componentDir = `actions/${config.path || config.name}`
-  // 创建文件夹
-  dir.make(componentDir)
+  const postImp = `import { post } from '@common/ajax'\n\n`
+
+  if (!isAdd) {
+    // 创建文件夹
+    dir.make(componentDir)
+    if (table.hasPost) {
+      actions.push(postImp)
+    }
+  }
 
   // table
   if (config.table) {
@@ -112,16 +122,29 @@ const renderActions = (config, childConfig) => {
     })
   }
 
-  dir.write(`${componentDir}/index.js`, actions.join(''))
+  if (isAdd) {
+    const curContent = dir.read(`${componentDir}/index.js`)
+    let ret = curContent + actions.join('')
+    if (curContent.indexOf(postImp) < 0) {
+      ret = postImp + ret
+    }
+    dir.write(`${componentDir}/index.js`, ret)
+  } else {
+    dir.write(`${componentDir}/index.js`, actions.join(''))
+  }
 }
 
-const renderReducers = (config, childConfig) => {
+const renderReducers = (config, childConfig, isAdd) => {
   const { table, modals, condition } = childConfig
-  const reducers = [`import { combinceReducer } from '@common/easy'`]
+  const reducers = []
   const componentDir = `reducers/${toUpperCase(config.path || config.name)}`
   let exportsName = []
-  // 创建文件夹
-  dir.make(componentDir)
+
+  if (!isAdd) {
+    // 创建文件夹
+    dir.make(componentDir)
+    reducers.push(`import { combinceReducer } from '@common/easy'`)
+  }
 
   // condition
   if (config.condition) {
@@ -141,14 +164,37 @@ const renderReducers = (config, childConfig) => {
       exportsName = exportsName.concat(modal.container.data)
     })
   }
-  // exports
-  reducers.push(`
+
+  if (!isAdd) {
+    // exports
+    reducers.push(`
 export default combinceReducer({
-  ${exportsName.join(',\n  ')}
+  ${exportsName.join(',\n')}
 }${!config.isChild ? `, '${config.namespace}'`: ''})
 `)
-
-  dir.write(`${componentDir}/index.js`, reducers.join('\n'))
+  
+    dir.write(`${componentDir}/index.js`, reducers.join('\n'))
+  } else {
+    const curContent = dir.read(`${componentDir}/index.js`)
+    const start = curContent.indexOf('export default combinceReducer({')
+    const end = curContent.lastIndexOf(
+      `}${!config.isChild ? `, '${config.namespace}'`: ''})`
+    )
+    if (start > 0 && end > 0) {
+      const names = curContent.slice(
+        start + 'export default combinceReducer({'.length,
+        end
+      ).split(',\n').filter(item => item)
+      names.push(exportsName)
+      reducers.push(`
+export default combinceReducer({
+  ${names.join(',\n')}
+}${!config.isChild ? `, '${config.namespace}'`: ''})
+`)
+      dir.write(`${componentDir}/index.js`,
+        curContent.slice(0, start) + reducers.join('\n'))
+    }
+  }
 }
 
 exports.render = (config) => {
@@ -166,13 +212,34 @@ exports.render = (config) => {
   console.log(chalk.green(`${config.name}相关文件全部生成成功!`))
 }
 
-const fnMap = {
-  'table': getTable
-}
-
-exports.renderItem = (config, type) => {
+exports.add = (config) => {
   dir = dir(config)
-  const res = fnMap[type]
-  console.log(res)
+  
+  if (config.table) {
+    const childConfig = {
+      table: getTable(config.table, config.namespace, config),
+      modals: config.modals ? config.modals.map(((modal) => {
+        return getModal(modal, config.namespace, config)
+      })) : [],
+      condition: getCondition(config.condition, config.namespace, config)
+    }
+    const defines = renderComponent(config, childConfig, true)
+    renderActions(config, childConfig, true)
+    renderReducers(config, childConfig, true)
+    console.log(`追加成功!`)
+    console.log(`请在components/${config.name}/index.js中添加以下处理:`)
+    console.log(`
+      添加引用:
+      ${defines.imports.join('\n')}
+    `)
+    console.log(`
+      添加actions:
+      ${defines.actions.join(',')}
+    `)
+    console.log(`
+      添加props传递:
+      ${defines.data.join(',')}
+    `)
+  }
 }
 

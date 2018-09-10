@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const config = require('./config.report')
 const esformatter = require('esformatter');
 const chalk = require('chalk');
 //register plugin manually
@@ -63,6 +62,9 @@ module.exports = (config) => {
         'utf8'
       )
       log.file(p)
+    },
+    read: (p) => {
+      return fs.readFileSync(resolve(p), 'utf8')
     }
   }
 }

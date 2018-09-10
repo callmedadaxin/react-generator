@@ -59,8 +59,7 @@ const getActionStr = (config, namespace = '/') => {
     add: config.add,
     edit: config.edit,
     del: config.del,
-    status: config.status,
-    hasPost: Boolean(config.del || config.status)
+    status: config.status
   })
 }
 
@@ -88,6 +87,7 @@ module.exports = (cfg = config, namespace) => {
     component: getComponentStr(cfg),
     actions: getActionStr(cfg, namespace),
     reducers: getReducerStr(cfg),
-    container: getContainerConfig(cfg)
+    container: getContainerConfig(cfg),
+    hasPost: Boolean(cfg.del || cfg.status)
   }
 }

@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const program = require('commander')
-const { render } = require('./index')
+const { render, add } = require('./index')
 // const inquirer = require('inquirer')
 const chalk = require('chalk')
 const fs = require('fs')
@@ -23,6 +23,23 @@ program.command('init')
       const retPath = path.join(process.cwd(), p)
       const config = require(retPath)
       render(config)
+    } catch (error) {
+      console.log(error)
+      logError('读取配置文件失败!')
+    }
+  })
+
+program.command('add')
+  .option('-c, --config [config]', '配置路径')
+  .action(p => {
+    p = p.config
+    if (!p) {
+      return logError('未输入配置路径')
+    }
+    try {
+      const retPath = path.join(process.cwd(), p)
+      const config = require(retPath)
+      add(config)
     } catch (error) {
       console.log(error)
       logError('读取配置文件失败!')

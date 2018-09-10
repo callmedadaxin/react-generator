@@ -1,7 +1,3 @@
-{{#if hasPost}}
-import { post } from '@common/ajax'
-{{/if}}
-
 const get{{upper name}}Fn = params => {
   return {
     url: '{{url}}',
