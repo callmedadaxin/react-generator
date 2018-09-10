@@ -2,8 +2,25 @@ const fs = require('fs')
 const path = require('path')
 const config = require('./config.report')
 const esformatter = require('esformatter');
+const chalk = require('chalk');
 //register plugin manually
 esformatter.register(require('esformatter-jsx'));
+
+const msgType = {
+  dir: '创建文件夹',
+  file: '生成文件'
+}
+const logFn = (type = 'file', msg) => {
+  console.log(chalk.cyan(`${msgType[type]}: ${msg}`))
+}
+const log = {
+  dir (msg) {
+    logFn('dir', msg)
+  },
+  file (msg) {
+    logFn('file', msg)
+  }
+}
 
 const options = {
   "jsx": {
@@ -22,13 +39,22 @@ const options = {
 }
 
 module.exports = (config) => {
-  const resolve = p => path.resolve(__dirname, path.join(config.root, p))
+  const resolve = p => path.join(config.root, p)
+
+  const make = (p) => {
+    if (fs.existsSync(resolve(p))) return
+    fs.mkdirSync(resolve(p))
+    log.dir(p)
+  }
+
+  make('')
+  make('components')
+  make('actions')
+  make('reducers')
+  make('containers')
 
   return {
-    make: (p) => {
-      if (fs.existsSync(resolve(p))) return
-      fs.mkdirSync(resolve(p))
-    },
+    make: make,
     write: (p, content) => {
       fs.writeFileSync(
         resolve(p),
@@ -36,6 +62,7 @@ module.exports = (config) => {
         // content,
         'utf8'
       )
+      log.file(p)
     }
   }
 }

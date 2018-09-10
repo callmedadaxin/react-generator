@@ -16,10 +16,6 @@ import styles from './index.cssmodule.styl'
 
 {{{imports}}}
 
-{{#if hasTime}}
-const timeList = ["24小时", "7天"];
-const longTimeList = ["24小时", "7天", "30天"];
-{{/if}}
 @connect(
   (state, mapState) => state.{{state}},
   (dispatch, mapActions) => mapActions(actions, [
@@ -49,7 +45,6 @@ export default class {{upper name}} extends PureComponent {
       {{{actions}}}
     } = this.props
     {{#if hasTime}}
-    const _timeList = features.max_range_7d ? timeList : longTimeList;
     {{/if}}
     return (
       <div className="container-fluid">
@@ -58,7 +53,6 @@ export default class {{upper name}} extends PureComponent {
           {{#if hasTime}}
           <TimeSwitch
             timeRange={condition.time_range}
-            options={_timeList}
             changeTimeRange={this.handleTimeChange}
           />
           {{/if}}

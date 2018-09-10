@@ -1,5 +1,14 @@
 {
+  "name": "tdp-generator",
+  "version": "1.0.0",
+  "description": "TDP代码生成工具",
+  "main": "index.js",
+  "bin": {
+    "tdp": "./script.js"
+  },
   "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.15.1",
     "esformatter": "^0.10.0",
     "esformatter-jsx": "^8.0.1",
     "handlebars": "^4.0.11",

@@ -4,7 +4,12 @@ module.exports = {
   hasTime: true, // 是否有时间选择
   title: '告警主机', // 模块标题, 非page页时不传
   root: './result', // 输出的src目录
+  // root: '../tip/src/', // 输出的src目录
   namespace: '/host',
+  // path: 'reportCenter/task', // 子模块路径
+  // isChild: true, // 是否是子模块
+  // hasContainer: false, // 是否自动生成container
+  // namespace: '/report/task',
   condition: {
     name: 'condition',
     fields: [{

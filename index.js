@@ -2,12 +2,12 @@ const compile = require('./comileTpl')
 const getTable = require('./table')
 const getModal = require('./modal')
 const getCondition = require('./condition')
-const config = require('./config')
-const dir = require('./dir')(config)
+let dir = require('./dir')
 const { toUpperCase } = require('./util')
 
 const componentPath = './templates/component.js'
 const containerPath = './templates/container.js'
+const chalk = require('chalk');
 
 const getDefines = (config, childConfig) => {
   const ret = {
@@ -33,7 +33,6 @@ const renderComponent = (config, childConfig) => {
   const componentDir = !config.isChild
     ? `components/${config.name}`
     : `components/${config.path}`
-
   // 创建文件夹
   dir.make(componentDir)
 
@@ -56,6 +55,7 @@ const renderComponent = (config, childConfig) => {
     state: !config.isChild ? toUpperCase(config.name) : toUpperCase(config.path.split('/').join('.')),
     action: config.path || config.name
   }))
+
   if (config.hasContainer) {
     dir.write(`containers/${toUpperCase(config.name)}.js`, compile(containerPath, {
       ...config
@@ -151,7 +151,8 @@ export default combinceReducer({
   dir.write(`${componentDir}/index.js`, reducers.join('\n'))
 }
 
-const render = (config) => {
+exports.render = (config) => {
+  dir = dir(config)
   const childConfig = {
     table: getTable(config.table, config.namespace, config),
     modals: config.modals ? config.modals.map(((modal) => {
@@ -162,7 +163,16 @@ const render = (config) => {
   renderComponent(config, childConfig)
   renderActions(config, childConfig)
   renderReducers(config, childConfig)
+  console.log(chalk.green(`${config.name}相关文件全部生成成功!`))
 }
 
-render(config)
+const fnMap = {
+  'table': getTable
+}
+
+exports.renderItem = (config, type) => {
+  dir = dir(config)
+  const res = fnMap[type]
+  console.log(res)
+}
 
