@@ -4,14 +4,17 @@
 ## Api
 
 ```
-// 初始化整个模块的代码
-$ tdp init
-// 追加table模块代码
-$ tdp init table
-// 追加modal模块代码
-$ tdp init modal
-// 追加condition模块代码
-$ tdp init condition
+// 获取基本的配置,并输出到文件
+$ tdp config -p ./config.js
+
+// 以config.js为配置生成代码
+$ tdp init -c ./config.js
+
+// 获取追加代码的配置,并输出到文件
+$ tdp add-config -p ./config.add.js
+
+// 按配置追加代码
+$ tdp add -c ./config.add.js
 ```
 
 ## 结果

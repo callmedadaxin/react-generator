@@ -58,6 +58,18 @@ program.command('config')
       console.log(chalk.green(`基本配置文件生成成功: ${p}`))
     }
   })
+program.command('add-config')
+  .option('-p, --path [path]')
+  .action(config => {
+    const p = config.path
+    const configData = fs.readFileSync(path.resolve(__dirname, './config.add.js'))
+    if (!p) {
+      console.log(configData)
+    } else {
+      fs.writeFileSync(p, configData, 'utf8')
+      console.log(chalk.green(`基本配置文件生成成功: ${p}`))
+    }
+  })
 
 program.parse(process.argv)
 
