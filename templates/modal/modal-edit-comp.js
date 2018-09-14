@@ -26,7 +26,7 @@ export default class {{upper name}}Modal extends PureComponent {
   }
   render() {
     const { data, handleCancel } = this.props
-    const { loading, data: itemData = {}, showModal } = data
+    const { loading, item: itemData = {}, showModal, error } = data
     const fields = this.initFields(itemData)
     return (
       <Modal isOpen={showModal} title="{{title}}"
